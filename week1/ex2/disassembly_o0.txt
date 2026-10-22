@@ -1,0 +1,89 @@
+
+build\debug\w1e2.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+08001ee4 <tracer_record>:
+ 8001ee4:	b580      	push	{r7, lr}
+ 8001ee6:	b086      	sub	sp, #24
+ 8001ee8:	af00      	add	r7, sp, #0
+ 8001eea:	4603      	mov	r3, r0
+ 8001eec:	71fb      	strb	r3, [r7, #7]
+ 8001eee:	2300      	movs	r3, #0
+ 8001ef0:	75fb      	strb	r3, [r7, #23]
+ 8001ef2:	4b24      	ldr	r3, [pc, #144]	@ (8001f84 <tracer_record+0xa0>)
+ 8001ef4:	781b      	ldrb	r3, [r3, #0]
+ 8001ef6:	b2db      	uxtb	r3, r3
+ 8001ef8:	2b00      	cmp	r3, #0
+ 8001efa:	d03e      	beq.n	8001f7a <tracer_record+0x96>
+ 8001efc:	2000      	movs	r0, #0
+ 8001efe:	f7ff f893 	bl	8001028 <xTaskGetApplicationTaskTagFromISR>
+ 8001f02:	6138      	str	r0, [r7, #16]
+ 8001f04:	693b      	ldr	r3, [r7, #16]
+ 8001f06:	2b00      	cmp	r3, #0
+ 8001f08:	d004      	beq.n	8001f14 <tracer_record+0x30>
+ 8001f0a:	693b      	ldr	r3, [r7, #16]
+ 8001f0c:	2000      	movs	r0, #0
+ 8001f0e:	4798      	blx	r3
+ 8001f10:	4603      	mov	r3, r0
+ 8001f12:	75fb      	strb	r3, [r7, #23]
+ 8001f14:	7dfb      	ldrb	r3, [r7, #23]
+ 8001f16:	4618      	mov	r0, r3
+ 8001f18:	f7ff ffbe 	bl	8001e98 <tracer_toggle_gpio>
+ 8001f1c:	4b1a      	ldr	r3, [pc, #104]	@ (8001f88 <tracer_record+0xa4>)
+ 8001f1e:	685b      	ldr	r3, [r3, #4]
+ 8001f20:	60fb      	str	r3, [r7, #12]
+ 8001f22:	4b1a      	ldr	r3, [pc, #104]	@ (8001f8c <tracer_record+0xa8>)
+ 8001f24:	681b      	ldr	r3, [r3, #0]
+ 8001f26:	491a      	ldr	r1, [pc, #104]	@ (8001f90 <tracer_record+0xac>)
+ 8001f28:	68fa      	ldr	r2, [r7, #12]
+ 8001f2a:	f841 2033 	str.w	r2, [r1, r3, lsl #3]
+ 8001f2e:	4b17      	ldr	r3, [pc, #92]	@ (8001f8c <tracer_record+0xa8>)
+ 8001f30:	681b      	ldr	r3, [r3, #0]
+ 8001f32:	4a17      	ldr	r2, [pc, #92]	@ (8001f90 <tracer_record+0xac>)
+ 8001f34:	00db      	lsls	r3, r3, #3
+ 8001f36:	4413      	add	r3, r2
+ 8001f38:	7dfa      	ldrb	r2, [r7, #23]
+ 8001f3a:	711a      	strb	r2, [r3, #4]
+ 8001f3c:	4b13      	ldr	r3, [pc, #76]	@ (8001f8c <tracer_record+0xa8>)
+ 8001f3e:	681b      	ldr	r3, [r3, #0]
+ 8001f40:	4a13      	ldr	r2, [pc, #76]	@ (8001f90 <tracer_record+0xac>)
+ 8001f42:	00db      	lsls	r3, r3, #3
+ 8001f44:	4413      	add	r3, r2
+ 8001f46:	79fa      	ldrb	r2, [r7, #7]
+ 8001f48:	715a      	strb	r2, [r3, #5]
+ 8001f4a:	4b10      	ldr	r3, [pc, #64]	@ (8001f8c <tracer_record+0xa8>)
+ 8001f4c:	681b      	ldr	r3, [r3, #0]
+ 8001f4e:	3301      	adds	r3, #1
+ 8001f50:	b2db      	uxtb	r3, r3
+ 8001f52:	4a0e      	ldr	r2, [pc, #56]	@ (8001f8c <tracer_record+0xa8>)
+ 8001f54:	6013      	str	r3, [r2, #0]
+ 8001f56:	4b0f      	ldr	r3, [pc, #60]	@ (8001f94 <tracer_record+0xb0>)
+ 8001f58:	681b      	ldr	r3, [r3, #0]
+ 8001f5a:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
+ 8001f5e:	d106      	bne.n	8001f6e <tracer_record+0x8a>
+ 8001f60:	4b0d      	ldr	r3, [pc, #52]	@ (8001f98 <tracer_record+0xb4>)
+ 8001f62:	681b      	ldr	r3, [r3, #0]
+ 8001f64:	3301      	adds	r3, #1
+ 8001f66:	b2db      	uxtb	r3, r3
+ 8001f68:	4a0b      	ldr	r2, [pc, #44]	@ (8001f98 <tracer_record+0xb4>)
+ 8001f6a:	6013      	str	r3, [r2, #0]
+ 8001f6c:	e006      	b.n	8001f7c <tracer_record+0x98>
+ 8001f6e:	4b09      	ldr	r3, [pc, #36]	@ (8001f94 <tracer_record+0xb0>)
+ 8001f70:	681b      	ldr	r3, [r3, #0]
+ 8001f72:	3301      	adds	r3, #1
+ 8001f74:	4a07      	ldr	r2, [pc, #28]	@ (8001f94 <tracer_record+0xb0>)
+ 8001f76:	6013      	str	r3, [r2, #0]
+ 8001f78:	e000      	b.n	8001f7c <tracer_record+0x98>
+ 8001f7a:	bf00      	nop
+ 8001f7c:	3718      	adds	r7, #24
+ 8001f7e:	46bd      	mov	sp, r7
+ 8001f80:	bd80      	pop	{r7, pc}
+ 8001f82:	bf00      	nop
+ 8001f84:	20002920 	.word	0x20002920
+ 8001f88:	e0001000 	.word	0xe0001000
+ 8001f8c:	20002918 	.word	0x20002918
+ 8001f90:	20002118 	.word	0x20002118
+ 8001f94:	20002924 	.word	0x20002924
+ 8001f98:	2000291c 	.word	0x2000291c

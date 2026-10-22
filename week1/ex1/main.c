@@ -1,7 +1,11 @@
-#include "board.h"
+#include "uart.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "blinky.h"
+
+void board_init(void);
+void board_panic(const char *file, unsigned line);
+
 int main(void)
 {
     board_init();
