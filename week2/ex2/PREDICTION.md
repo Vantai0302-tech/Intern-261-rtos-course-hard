@@ -7,4 +7,4 @@
 ## Dự đoán hiệu năng
 - Dự đoán cycle trung bình 1 lần push/pop trên ring buffer tự viết: 35/30 cycle.
 - Dự đoán cycle trung bình 1 lần `xQueueSendFromISR` + `xQueueReceive`: 250 cycle.
-- Dự đoán ring buffer nhanh hơn/chậm hơn queue gốc bao nhiêu lần, và vì sao (copy, critical section, wake task):  Dự đoán ring buffer nhanh hơn khoảng 250 / 35 ≈ 7,1 lần. Queue phải thực hiện thêm việc sao chép phần tử, bảo vệ cấu trúc nội bộ và kiểm tra task cần đánh thức. Mức chênh lệch thực tế phụ thuộc việc benchmark có gây chuyển task hay không.
+- Dự đoán ring buffer nhanh hơn/chậm hơn queue gốc bao nhiêu lần, và vì sao (copy, critical section, wake task):  Dự đoán ring buffer nhanh hơn khoảng 250 / 65 ≈ 3.85 lần. Queue phải thực hiện thêm việc sao chép phần tử, bảo vệ cấu trúc nội bộ và kiểm tra task cần đánh thức. Mức chênh lệch thực tế phụ thuộc việc benchmark có gây chuyển task hay không.
