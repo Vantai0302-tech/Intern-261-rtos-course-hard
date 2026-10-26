@@ -2,7 +2,7 @@
 
 ## Dự đoán unbounded inversion
 - Với `W2E3_TASK_PRIORITY`/`W2E3_LOCK_HOLD_MS_A` trong PARAMS.md, dự đoán thời gian τ_H bị trễ (block gián tiếp
-  qua τ_M) trong trường hợp xấu nhất: lớn hơn 37 ms.
+  qua τ_M) trong trường hợp xấu nhất: không có cận trên hữu hạn.
 
 ## Dự đoán chained blocking
 - Dự đoán số LẦN τ_H bị chặn nối tiếp (chuỗi blocking) khi dùng mutex có inheritance: 2 lần.
