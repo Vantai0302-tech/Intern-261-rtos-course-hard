@@ -1,4 +1,5 @@
-#include "board.h"
+#include "uart.h"
+#include "stm32f1xx.h"
 #include "gpio.h"
 void uart_init(void)
 {

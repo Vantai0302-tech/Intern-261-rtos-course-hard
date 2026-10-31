@@ -1,6 +1,9 @@
-#include "board.h"
+#include "stm32f1xx.h"
 #include "gpio.h"
+#include "uart.h"
 #include "FreeRTOS.h"
+
+void board_panic(const char *file, unsigned line);
 uint32_t SystemCoreClock = 72000000UL;
 static void wait_bits(volatile uint32_t *reg, uint32_t mask, uint32_t value)
 {

@@ -1,5 +1,7 @@
 #include <stdint.h>
-#include "board.h"
+
+void board_panic(const char *file, unsigned line);
+void SystemInit(void);
 extern uint32_t _estack, _sidata, _sdata, _edata, _sbss, _ebss;
 extern int main(void);
 void Reset_Handler(void);
@@ -59,10 +61,22 @@ void USBWakeUp_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 typedef void (*vector_t)(void);
 __attribute__((section(".isr_vector"), used))
 const vector_t vectors[] = {
-    (vector_t)&_estack, Reset_Handler,
-    NMI_Handler, HardFault_Handler, MemManage_Handler, BusFault_Handler,
-    UsageFault_Handler, 0, 0, 0, 0, SVC_Handler, DebugMon_Handler, 0,
-    PendSV_Handler, SysTick_Handler,
+    (vector_t)&_estack,
+    Reset_Handler,
+    NMI_Handler,
+    HardFault_Handler,
+    MemManage_Handler,
+    BusFault_Handler,
+    UsageFault_Handler,
+    0,
+    0,
+    0,
+    0,
+    SVC_Handler,
+    DebugMon_Handler,
+    0,
+    PendSV_Handler,
+    SysTick_Handler,
     WWDG_IRQHandler,
     PVD_IRQHandler,
     TAMPER_IRQHandler,
@@ -110,10 +124,15 @@ const vector_t vectors[] = {
 void Reset_Handler(void)
 {
     uint32_t *src = &_sidata;
-    for (uint32_t *dst = &_sdata; dst < &_edata; ) { *dst++ = *src++; }
-    for (uint32_t *dst = &_sbss; dst < &_ebss; ) { *dst++ = 0U; }
+    for (uint32_t *dst = &_sdata; dst < &_edata;)
+    {
+        *dst++ = *src++;
+    }
+    for (uint32_t *dst = &_sbss; dst < &_ebss;)
+    {
+        *dst++ = 0U;
+    }
     SystemInit();
     (void)main();
     board_panic(__FILE__, __LINE__);
 }
-

@@ -4,6 +4,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 set(WEEK1_DIR "${CMAKE_CURRENT_SOURCE_DIR}/week1" CACHE PATH "Week 1 source directory")
+set(WEEK2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/week2" CACHE PATH "Week 2 source directory")
 set(FREERTOS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/FreeRTOS-Kernel" CACHE PATH "FreeRTOS V11.1.0")
 set(CMSIS_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/CMSIS/Core/Include" CACHE PATH "CMSIS Core headers")
 set(CMSIS_DEVICE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/CMSIS/Device/Include" CACHE PATH "STM32F1 device headers")
@@ -60,5 +61,44 @@ function(add_firmware name exercise static_memory trace optimization)
     endif()
 endfunction()
 add_firmware(w1e1 ex1 0 0 -O0 ${WEEK1_DIR}/ex1/main.c ${WEEK1_DIR}/ex1/blinky.c)
-# add_firmware(w1e2 ex2 0 1 -O0 ${WEEK1_DIR}/ex2/main.c)
-# add_firmware(w1e2_o2 ex2 0 1 -O2 ${WEEK1_DIR}/ex2/main.c)
+add_firmware(w1e2 ex2 0 1 -O0 ${WEEK1_DIR}/ex2/main.c)
+add_firmware(w1e2_o2 ex2 0 1 -O2 ${WEEK1_DIR}/ex2/main.c)
+add_firmware(w2e1 ex1 1 0 -O0
+    ${WEEK2_DIR}/ex1/main.c
+    ${WEEK2_DIR}/ex1/i2c1_driver.c)
+target_include_directories(w2e1 BEFORE PRIVATE ${WEEK2_DIR}/ex1/include)
+add_firmware(w2e1_fault ex1 1 0 -O0
+    ${WEEK2_DIR}/ex1/fault_main.c
+    ${WEEK2_DIR}/ex1/i2c1_driver.c)
+target_include_directories(w2e1_fault BEFORE PRIVATE ${WEEK2_DIR}/ex1/include)
+add_firmware(w2e2 ex2 1 0 -O0
+    ${WEEK2_DIR}/ex2/main.c
+    ${WEEK2_DIR}/ex2/spsc_ring.c)
+target_include_directories(w2e2 BEFORE PRIVATE ${WEEK2_DIR}/ex2/include)
+add_firmware(w2e3 ex3 1 1 -O0
+    ${WEEK2_DIR}/ex3/main.c
+    ${WEEK2_DIR}/ex3/priority_ceiling.c)
+target_include_directories(w2e3 BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
+add_firmware(w2e3_chain ex3 1 1 -O0
+    ${WEEK2_DIR}/ex3/chained_main.c)
+target_include_directories(w2e3_chain BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
+add_firmware(w2e3_deadlock ex3 1 1 -O0
+    ${WEEK2_DIR}/ex3/deadlock_main.c)
+target_include_directories(w2e3_deadlock BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
+add_firmware(w2e3_ceiling ex3 1 1 -O0
+    ${WEEK2_DIR}/ex3/ceiling_main.c
+    ${WEEK2_DIR}/ex3/priority_ceiling.c)
+target_include_directories(w2e3_ceiling BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
+add_firmware(w2e3_ceiling_inversion ex3 1 1 -O0
+    ${WEEK2_DIR}/ex3/ceiling_inversion_main.c
+    ${WEEK2_DIR}/ex3/priority_ceiling.c)
+target_include_directories(w2e3_ceiling_inversion BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
+# add_firmware(w1e3 ex3 0 1 -O0 ${WEEK1_DIR}/ex3/main.c ${WEEK1_DIR}/ex3/rta_app.c)
+# add_firmware(w1e4 ex4 0 0 -O0
+#     ${WEEK1_DIR}/ex4/main.c
+#     ${WEEK1_DIR}/ex4/heap_experiment.c)
+add_firmware(w2e4 ex4 1 1 -O0
+    ${WEEK2_DIR}/ex4/main.c
+    ${WEEK2_DIR}/ex4/sync_app.c
+    ${FREERTOS_DIR}/event_groups.c)
+target_include_directories(w2e4 BEFORE PRIVATE ${WEEK2_DIR}/ex4/include)

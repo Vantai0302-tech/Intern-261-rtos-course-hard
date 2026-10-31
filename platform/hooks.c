@@ -1,6 +1,5 @@
 #include "FreeRTOS.h"
 #include "task.h"
-#include "board.h"
 
 void vApplicationMallocFailedHook(void)
 {
