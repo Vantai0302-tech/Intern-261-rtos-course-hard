@@ -1,0 +1,305 @@
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
+# WCRT: tag,jobs,max_cycles (72 cycles/us)
+# 1,687,543575
+# 2,344,1270902
+# 3,229,2667405
+# 4,184,4708230
+# switch trace: cycles,tag,IN|OUT
+1881503520,1,OUT
+1881504296,2,IN
+1882230852,2,OUT
+1882231612,3,IN
+1883627644,3,OUT
+1883628256,4,IN
+1883839557,4,OUT
+1883840319,1,IN
+1884382942,1,OUT
+1884383557,4,IN
+1885668426,4,OUT
+1885669027,0,IN
+1886719847,0,OUT
+1886720609,1,IN
+1887263231,1,OUT
+1887264007,2,IN
+1887990563,2,OUT
+1887991164,0,IN
+1889599840,0,OUT
+1889600602,1,IN
+1890143225,1,OUT
+1890143985,3,IN
+1891539442,3,OUT
+1891540043,0,IN
+1892479840,0,OUT
+1892480602,1,IN
+1893023225,1,OUT
+1893024001,2,IN
+1893750582,2,OUT
+1893751183,0,IN
+1893919546,0,OUT
+1893920158,4,IN
+1895359557,4,OUT
+1895360319,1,IN
+1895902961,1,OUT
+1895903576,4,IN
+1895960351,4,OUT
+1895960952,0,IN
+1898240144,0,OUT
+1898240906,1,IN
+1898783517,1,OUT
+1898784293,2,IN
+1899510833,2,OUT
+1899511593,3,IN
+1900907295,3,OUT
+1900907896,0,IN
+1901119550,0,OUT
+1901120312,1,IN
+1901662931,1,OUT
+1901663532,0,IN
+1903999847,0,OUT
+1904000609,1,IN
+1904543250,1,OUT
+1904544026,2,IN
+1905270942,2,OUT
+1905271554,4,IN
+1906766766,4,OUT
+1906767367,0,IN
+1906879842,0,OUT
+1906880604,1,IN
+1907423231,1,OUT
+1907423991,3,IN
+1908819447,3,OUT
+1908820048,0,IN
+1909759840,0,OUT
+1909760602,1,IN
+1910303216,1,OUT
+1910303992,2,IN
+1911030576,2,OUT
+1911031177,0,IN
+1912639550,0,OUT
+1912640312,1,IN
+1913182969,1,OUT
+1913183570,0,IN
+1915520441,0,OUT
+1915521203,1,IN
+1916063817,1,OUT
+1916064593,2,IN
+1916791133,2,OUT
+1916791893,3,IN
+1918187582,3,OUT
+1918188194,4,IN
+1918399557,4,OUT
+1918400319,1,IN
+1918942942,1,OUT
+1918943557,4,IN
+1920228369,4,OUT
+1920228970,0,IN
+1921279847,0,OUT
+1921280609,1,IN
+1921823231,1,OUT
+1921824007,2,IN
+1922550582,2,OUT
+1922551183,0,IN
+1924159841,0,OUT
+1924160603,1,IN
+1924703250,1,OUT
+1924704010,3,IN
+1926099470,3,OUT
+1926100071,0,IN
+1926319545,0,OUT
+1926320157,4,IN
+1927039854,4,OUT
+1927040616,1,IN
+1927583233,1,OUT
+1927584009,2,IN
+1928310574,2,OUT
+1928311189,4,IN
+1929087973,4,OUT
+1929088574,0,IN
+1929919544,0,OUT
+1929920306,1,IN
+1930462950,1,OUT
+1930463551,0,IN
+1932800137,0,OUT
+1932800899,1,IN
+1933343511,1,OUT
+1933344287,2,IN
+1934070846,2,OUT
+1934071606,3,IN
+1935467306,3,OUT
+1935467907,0,IN
+1935679551,0,OUT
+1935680313,1,IN
+1936222955,1,OUT
+1936223556,0,IN
+1937119550,0,OUT
+1937120162,4,IN
+1938559854,4,OUT
+1938560616,1,IN
+1939103242,1,OUT
+1939104018,2,IN
+1939830580,2,OUT
+1939831195,4,IN
+1939887979,4,OUT
+1939888580,0,IN
+1941439840,0,OUT
+1941440602,1,IN
+1941983225,1,OUT
+1941983985,3,IN
+1943379442,3,OUT
+1943380043,0,IN
+1944319840,0,OUT
+1944320602,1,IN
+1944863216,1,OUT
+1944863992,2,IN
+1945590576,2,OUT
+1945591177,0,IN
+1947199550,0,OUT
+1947200312,1,IN
+1947742969,1,OUT
+1947743570,0,IN
+1947919550,0,OUT
+1947920162,4,IN
+1949415133,4,OUT
+1949415734,0,IN
+1950080138,0,OUT
+1950080900,1,IN
+1950623511,1,OUT
+1950624287,2,IN
+1951350827,2,OUT
+1951351587,3,IN
+1952747295,3,OUT
+1952747896,0,IN
+1952959550,0,OUT
+1952960312,1,IN
+1953502931,1,OUT
+1953503532,0,IN
+1955839847,0,OUT
+1955840609,1,IN
+1956383250,1,OUT
+1956384026,2,IN
+1957110610,2,OUT
+1957111211,0,IN
+1958720137,0,OUT
+1958720899,1,IN
+1959263520,1,OUT
+1959264280,3,IN
+1960659717,3,OUT
+1960660329,4,IN
+1961599854,4,OUT
+1961600616,1,IN
+1962143233,1,OUT
+1962144009,2,IN
+1962870574,2,OUT
+1962871189,4,IN
+1963428386,4,OUT
+1963428987,0,IN
+1964479550,0,OUT
+1964480312,1,IN
+1965022950,1,OUT
+1965023551,0,IN
+1967360138,0,OUT
+1967360900,1,IN
+1967903520,1,OUT
+1967904296,2,IN
+1968630852,2,OUT
+1968631612,3,IN
+1970027644,3,OUT
+1970028256,4,IN
+1970239557,4,OUT
+1970240319,1,IN
+1970782942,1,OUT
+1970783557,4,IN
+1972068426,4,OUT
+1972069027,0,IN
+1973119847,0,OUT
+1973120609,1,IN
+1973663231,1,OUT
+1973664007,2,IN
+1974390563,2,OUT
+1974391164,0,IN
+1975999840,0,OUT
+1976000602,1,IN
+1976543225,1,OUT
+1976543985,3,IN
+1977939442,3,OUT
+1977940043,0,IN
+1978879840,0,OUT
+1978880602,1,IN
+1979423225,1,OUT
+1979424001,2,IN
+1980150582,2,OUT
+1980151183,0,IN
+1980319546,0,OUT
+1980320158,4,IN
+1981759557,4,OUT
+1981760319,1,IN
+1982302961,1,OUT
+1982303576,4,IN
+1982360351,4,OUT
+1982360952,0,IN
+1984640144,0,OUT
+1984640906,1,IN
+1985183517,1,OUT
+1985184293,2,IN
+1985910833,2,OUT
+1985911593,3,IN
+1987307295,3,OUT
+1987307896,0,IN
+1987519550,0,OUT
+1987520312,1,IN
+1988062931,1,OUT
+1988063532,0,IN
+1990399847,0,OUT
+1990400609,1,IN
+1990943250,1,OUT
+1990944026,2,IN
+1991670942,2,OUT
+1991671554,4,IN
+1993279861,4,OUT
+1993280623,1,IN
+1993823167,1,OUT
+1993823927,3,IN
+1995219285,3,OUT
+1995219900,4,IN
+# end
+# stack task=RM0 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM1 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM2 allocated_words=192 min_free_words=153 min_free_bytes=612
+# stack task=RM3 allocated_words=192 min_free_words=145 min_free_bytes=580
+# stack task=stack_sample allocated_words=192 min_free_words=156 min_free_bytes=624
+# stack task=stack_uart allocated_words=256 min_free_words=216 min_free_bytes=864
+# stack task=Idle allocated_words=128 min_free_words=110 min_free_bytes=440
