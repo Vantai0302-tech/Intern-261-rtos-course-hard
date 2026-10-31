@@ -1,0 +1,24 @@
+# after_100ms L=2 M1=2
+# after_200ms L=2 M1=2
+# progress: 0=not_started 1=holds_first 2=waits_second 3=got_both
+# W2E3 deadlock trace: L=1 M2=2 H=3 M1=4
+19716,3,IN
+21941,3,OUT
+22741,2,IN
+24383,2,OUT
+25030,4,IN
+27266,4,OUT
+28065,1,IN
+29883,1,OUT
+30530,4,IN
+34740,4,OUT
+35536,1,IN
+39327,1,OUT
+39957,0,IN
+7221297,0,OUT
+7222079,3,IN
+7361772,3,OUT
+7362399,0,IN
+14493299,0,OUT
+14494081,3,IN
+# end

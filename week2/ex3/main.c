@@ -29,10 +29,23 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **tcb,
     *depth = configMINIMAL_STACK_SIZE;
 }
 
-static BaseType_t tag_low(void *p)     { (void)p; return 1; }
-static BaseType_t tag_medium1(void *p) { (void)p; return 4; }
-static BaseType_t tag_medium2(void *p) { (void)p; return 2; }
-static BaseType_t tag_high(void *p)    { (void)p; return 3; }
+static BaseType_t tag_low(void *p){ 
+    (void)p; 
+    return 1; 
+}
+
+static BaseType_t tag_medium1(void *p){ 
+    (void)p; 
+    return 4; 
+}
+static BaseType_t tag_medium2(void *p) {
+    (void)p;
+    return 2;
+}
+static BaseType_t tag_high(void *p){ 
+    (void)p; 
+    return 3; 
+}
 
 static void high_task(void *pvParameter){
     (void)pvParameter;
