@@ -12,7 +12,7 @@
 void board_init(void);
 void board_panic(const char *file, unsigned line);
 
-/* AD0 tied low selects 0x68. Change this address to 0x69 if AD0 is high. */
+
 static const uint8_t mpu_addr7 = 0x68U;
 
 static StaticTask_t write_tcb;
@@ -96,7 +96,6 @@ static void read_client(void *parameter)
         vTaskDelay(pdMS_TO_TICKS(700U));
     }
 }
-
 int main(void)
 {
     board_init();
@@ -105,12 +104,10 @@ int main(void)
     uart_mutex = xSemaphoreCreateMutexStatic(&uart_mutex_storage);
     configASSERT(uart_mutex != NULL);
     uart_puts("# W2E1 I2C clients; raw reads are not register values\r\n");
-
     configASSERT(xTaskCreateStatic(write_client, "i2c_write", 256U,
                                    NULL, 2U, write_stack, &write_tcb) != NULL);
     configASSERT(xTaskCreateStatic(read_client, "i2c_read", 256U,
                                    NULL, 2U, read_stack, &read_tcb) != NULL);
-
     vTaskStartScheduler();
     board_panic(__FILE__, __LINE__);
 }

@@ -1,0 +1,23 @@
+# W2E1 GPIO SDA fault test: PA1 wired to PB7/SDA
+fault status=4 recovery_streak=1/11
+write_after_recovery status=0 recovery_streak=1/11
+fault status=4 recovery_streak=2/11
+write_after_recovery status=0 recovery_streak=2/11
+fault status=4 recovery_streak=3/11
+write_after_recovery status=0 recovery_streak=3/11
+fault status=4 recovery_streak=4/11
+write_after_recovery status=0 recovery_streak=4/11
+fault status=4 recovery_streak=5/11
+write_after_recovery status=0 recovery_streak=5/11
+fault status=4 recovery_streak=6/11
+write_after_recovery status=0 recovery_streak=6/11
+fault status=4 recovery_streak=7/11
+write_after_recovery status=0 recovery_streak=7/11
+fault status=4 recovery_streak=8/11
+write_after_recovery status=0 recovery_streak=8/11
+fault status=4 recovery_streak=9/11
+write_after_recovery status=0 recovery_streak=9/11
+fault status=4 recovery_streak=10/11
+write_after_recovery status=0 recovery_streak=10/11
+fault status=4 recovery_streak=11/11
+write_after_recovery status=0 recovery_streak=11/11
