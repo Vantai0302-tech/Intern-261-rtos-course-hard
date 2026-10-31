@@ -18,7 +18,7 @@ Từ lúc task thứ sáu đến barrier đến lúc cả sáu task thoát khỏ
 | Biến thể | Số lần gửi | Số sự kiện nhận được | Chênh lệch (mất) |
 |---|---|---|---|
 | `eSetValueWithOverwrite` (buggy) | 1000 | 500 | 500 |
-| `eIncrement` (đã sửa) | 1000 | 1000 | 0 |
+| `eIncrement`  | 1000 | 1000 | 0 |
 
 ## Giải thích sai lệch (ĐỊNH LƯỢNG)
 
