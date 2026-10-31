@@ -1,0 +1,4 @@
+received=1000000 errors=0
+bench iterations=2019
+ring push_avg_cycles=122 pop_avg_cycles=150
+queue send_avg_cycles=500 receive_avg_cycles=664

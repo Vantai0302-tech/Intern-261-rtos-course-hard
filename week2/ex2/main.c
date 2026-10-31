@@ -3,6 +3,7 @@
 #include<stm32f1xx.h>
 #include<FreeRTOS.h>
 #include<task.h>
+#include<queue.h>
 #include<spsc_ring.h>
 #include<uart.h>
 
@@ -23,7 +24,34 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **tcb,
     *depth = configMINIMAL_STACK_SIZE;
 }
 static spsc_ring_t ring;
+static StaticQueue_t queue_control;
+static uint8_t queue_storage[W2E2_RING_CAPACITY * sizeof(spsc_elem_t)];
+static QueueHandle_t benchmark_queue;
 static volatile uint32_t produced = 0U;
+typedef enum {
+    PHASE_STRESS,
+    PHASE_RING_BENCH,
+    PHASE_QUEUE_BENCH
+} test_phase_t;
+static volatile test_phase_t phase = PHASE_STRESS;
+static volatile uint32_t bench_sent;
+static volatile uint32_t ring_push_cycles;
+static volatile uint32_t queue_send_cycles;
+
+static void tim3_stop(void)
+{
+    TIM3->DIER &= ~TIM_DIER_UIE;
+    TIM3->CR1 &= ~TIM_CR1_CEN;
+    TIM3->SR = 0U;
+}
+
+static void tim3_start(void)
+{
+    TIM3->CNT = 0U;
+    TIM3->SR = 0U;
+    TIM3->DIER |= TIM_DIER_UIE;
+    TIM3->CR1 |= TIM_CR1_CEN;
+}
 
 void TIM3_IRQHandler(void){
     if ((TIM3->SR & TIM_SR_UIF) == 0){
@@ -32,16 +60,89 @@ void TIM3_IRQHandler(void){
 
     TIM3->SR = ~TIM_SR_UIF;
     
-    if (produced >= W2E2_STRESS_COUNT){
-        TIM3->DIER &= ~TIM_DIER_UIE;
-        TIM3->CR1 &= ~TIM_CR1_CEN;
+    if (phase == PHASE_STRESS) {
+        if (produced >= W2E2_STRESS_COUNT) {
+            tim3_stop();
+            return;
+        }
+
+        spsc_elem_t elem = { .seq = produced };
+        if (spsc_ring_push_from_isr(&ring, elem)) {
+            ++produced;
+        }
         return;
     }
 
-    spsc_elem_t elem = { .seq = produced };
-    if (spsc_ring_push_from_isr (&ring, elem)){
-        ++produced;
+    if (bench_sent >= W2E2_BENCH_ITERATIONS) {
+        tim3_stop();
+        return;
     }
+
+    spsc_elem_t elem = { .seq = bench_sent };
+    uint32_t start = DWT->CYCCNT;
+    if (phase == PHASE_RING_BENCH) {
+        bool sent = spsc_ring_push_from_isr(&ring, elem);
+        uint32_t elapsed = DWT->CYCCNT - start;
+        if (sent) {
+            ring_push_cycles += elapsed;
+            ++bench_sent;
+        }
+    } else {
+        BaseType_t task_woken = pdFALSE;
+        BaseType_t sent = xQueueSendFromISR(benchmark_queue, &elem,
+                                             &task_woken);
+        uint32_t elapsed = DWT->CYCCNT - start;
+        if (sent == pdPASS) {
+            queue_send_cycles += elapsed;
+            ++bench_sent;
+        }
+        portYIELD_FROM_ISR(task_woken);
+    }
+    if (bench_sent >= W2E2_BENCH_ITERATIONS) {
+        tim3_stop();
+    }
+}
+
+static uint32_t consume_ring_bench(void)
+{
+    uint32_t received = 0U;
+    uint32_t cycles = 0U;
+    spsc_elem_t elem;
+
+    while (received < W2E2_BENCH_ITERATIONS) {
+        uint32_t start = DWT->CYCCNT;
+        bool got = spsc_ring_pop(&ring, &elem);
+        uint32_t elapsed = DWT->CYCCNT - start;
+        if (got) {
+            configASSERT(elem.seq == received);
+            cycles += elapsed;
+            ++received;
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(1U));
+        }
+    }
+    return cycles;
+}
+
+static uint32_t consume_queue_bench(void)
+{
+    uint32_t received = 0U;
+    uint32_t cycles = 0U;
+    spsc_elem_t elem;
+
+    while (received < W2E2_BENCH_ITERATIONS) {
+        uint32_t start = DWT->CYCCNT;
+        BaseType_t got = xQueueReceive(benchmark_queue, &elem, 0U);
+        uint32_t elapsed = DWT->CYCCNT - start;
+        if (got == pdPASS) {
+            configASSERT(elem.seq == received);
+            cycles += elapsed;
+            ++received;
+        } else {
+            vTaskDelay(pdMS_TO_TICKS(1U));
+        }
+    }
+    return cycles;
 }
 
 static void consumer_task(void *pvParameters)
@@ -54,7 +155,7 @@ static void consumer_task(void *pvParameters)
 
     (void)pvParameters;
 
-    TIM3->CR1 |= TIM_CR1_CEN;
+    tim3_start();
 
     while (received < W2E2_STRESS_COUNT) {
         if (!spsc_ring_pop(&ring, &elem)) {
@@ -90,6 +191,39 @@ static void consumer_task(void *pvParameters)
         uart_puts("\r\n");
     }
 
+    tim3_stop();
+    if (received != W2E2_STRESS_COUNT || errors != 0U) {
+        vTaskSuspend(NULL);
+    }
+
+    /* The stress producer is stopped before head/tail and counters reset. */
+    spsc_ring_init(&ring);
+    bench_sent = 0U;
+    ring_push_cycles = 0U;
+    phase = PHASE_RING_BENCH;
+    tim3_start();
+    uint32_t ring_pop_cycles = consume_ring_bench();
+    tim3_stop();
+
+    bench_sent = 0U;
+    queue_send_cycles = 0U;
+    phase = PHASE_QUEUE_BENCH;
+    tim3_start();
+    uint32_t queue_receive_cycles = consume_queue_bench();
+    tim3_stop();
+
+    uart_puts("bench iterations=");
+    uart_u32(W2E2_BENCH_ITERATIONS);
+    uart_puts("\r\nring push_avg_cycles=");
+    uart_u32(ring_push_cycles / W2E2_BENCH_ITERATIONS);
+    uart_puts(" pop_avg_cycles=");
+    uart_u32(ring_pop_cycles / W2E2_BENCH_ITERATIONS);
+    uart_puts("\r\nqueue send_avg_cycles=");
+    uart_u32(queue_send_cycles / W2E2_BENCH_ITERATIONS);
+    uart_puts(" receive_avg_cycles=");
+    uart_u32(queue_receive_cycles / W2E2_BENCH_ITERATIONS);
+    uart_puts("\r\n");
+
     vTaskSuspend(NULL);
 }
 static void tim3_init(void)
@@ -111,6 +245,12 @@ int main(void)
 {
     board_init();
     spsc_ring_init(&ring);
+    benchmark_queue = xQueueCreateStatic(
+        W2E2_RING_CAPACITY,
+        sizeof(spsc_elem_t),
+        queue_storage,
+        &queue_control);
+    configASSERT(benchmark_queue != NULL);
     tim3_init();
 
     configASSERT(xTaskCreateStatic(consumer_task, "consumer", 256U,
