@@ -18,6 +18,10 @@ static StaticEventGroup_t barrier_storage;
 static EventGroupHandle_t barrier_group;
 static StaticTask_t task_tcb[W2E4_NUM_TASKS];
 static StackType_t task_stack[W2E4_NUM_TASKS][192U];
+static uint32_t barrier_arrivals;
+static uint32_t barrier_releases;
+static uint32_t barrier_last_arrival_cycles;
+static uint32_t barrier_max_release_cycles;
 
 static TaskHandle_t receiver_handle;
 static uint32_t total_sent;
@@ -82,11 +86,27 @@ void vTaskBarrierParticipant(void *pvParameters)
     configASSERT(index < W2E4_NUM_TASKS);
 
     EventBits_t my_bit = (EventBits_t)(1UL << index);
+    taskENTER_CRITICAL();
+    ++barrier_arrivals;
+    BaseType_t is_last = (barrier_arrivals == W2E4_NUM_TASKS) ? pdTRUE : pdFALSE;
+    taskEXIT_CRITICAL();
+    if (is_last == pdTRUE) {
+        barrier_last_arrival_cycles = DWT->CYCCNT;
+    }
+
     EventBits_t result = xEventGroupSync(
         barrier_group,
         my_bit,
         (EventBits_t)W2E4_SYNC_BITS_MASK,
         pdMS_TO_TICKS(W2E4_SYNC_TIMEOUT_MS));
+
+    uint32_t release_cycles = DWT->CYCCNT - barrier_last_arrival_cycles;
+    taskENTER_CRITICAL();
+    if (release_cycles > barrier_max_release_cycles) {
+        barrier_max_release_cycles = release_cycles;
+    }
+    ++barrier_releases;
+    taskEXIT_CRITICAL();
 
     configASSERT((result & W2E4_SYNC_BITS_MASK) == W2E4_SYNC_BITS_MASK);
 
@@ -95,6 +115,12 @@ void vTaskBarrierParticipant(void *pvParameters)
     for (;;) {
         vTaskSuspend(NULL);
     }
+}
+
+uint32_t sync_app_barrier_release_cycles(void)
+{
+    configASSERT(barrier_releases == W2E4_NUM_TASKS);
+    return barrier_max_release_cycles;
 }
 
 void sync_app_init_barrier(void)
@@ -128,6 +154,21 @@ void sync_app_wait_barrier(void)
         pdMS_TO_TICKS(W2E4_SYNC_TIMEOUT_MS));
 
     configASSERT((bits & W2E4_SYNC_BITS_MASK) == W2E4_SYNC_BITS_MASK);
+
+    /* The waiter's bits may become ready before every participant has
+       returned from xEventGroupSync() and recorded its DWT timestamp. */
+    TickType_t start = xTaskGetTickCount();
+    for (;;) {
+        taskENTER_CRITICAL();
+        uint32_t released = barrier_releases;
+        taskEXIT_CRITICAL();
+        if (released == W2E4_NUM_TASKS) {
+            break;
+        }
+        configASSERT((TickType_t)(xTaskGetTickCount() - start) <
+                     pdMS_TO_TICKS(W2E4_SYNC_TIMEOUT_MS));
+        vTaskDelay(pdMS_TO_TICKS(1U));
+    }
 }
 void sync_app_notify_send_buggy(uint32_t value)
 {
