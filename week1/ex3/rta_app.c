@@ -11,6 +11,51 @@ static uint32_t tick_zero_cycles;
 static uint32_t completed_jobs[W1E3_NUM_TASKS];
 static uint32_t max_response_cycles[W1E3_NUM_TASKS];
 static uint8_t measuring = 1U;
+static uint32_t busy_loop_count[W1E3_NUM_TASKS];
+
+/* Fixed work: preemption pauses the loop instead of consuming its budget. */
+__attribute__((noinline)) static void run_busy_loop(uint32_t count)
+{
+    for (volatile uint32_t i = 0U; i < count; ++i) {
+        __NOP();
+    }
+}
+
+static uint32_t measure_busy_loop(uint32_t count)
+{
+    uint32_t saved_primask = __get_PRIMASK();
+    __disable_irq();
+    uint32_t start = DWT->CYCCNT;
+    run_busy_loop(count);
+    uint32_t elapsed = DWT->CYCCNT - start;
+    __set_PRIMASK(saved_primask);
+    return elapsed;
+}
+
+static void calibrate_busy_loops(void)
+{
+    for (uint32_t i = 0U; i < W1E3_NUM_TASKS; ++i) {
+        uint32_t target = W1E3_BUSY_WAIT_US[i] *
+                          (configCPU_CLOCK_HZ / 1000000U);
+        uint32_t count = 4096U;
+        for (uint32_t pass = 0U; pass < 3U; ++pass) {
+            uint32_t elapsed = measure_busy_loop(count);
+            configASSERT(elapsed != 0U);
+            count = (uint32_t)(((uint64_t)count * target + elapsed / 2U) /
+                               elapsed);
+            configASSERT(count != 0U);
+        }
+        busy_loop_count[i] = count;
+        uint32_t measured = measure_busy_loop(count);
+        uart_puts("# calibration tag=");
+        uart_u32(i + 1U);
+        uart_puts(" target_cycles=");
+        uart_u32(target);
+        uart_puts(" measured_cycles=");
+        uart_u32(measured);
+        uart_puts("\r\n");
+    }
+}
 
 static void capture_tick_zero(void)
 {
@@ -99,7 +144,6 @@ void vTaskPeriodic(void *pvParameters)
 {
     uint32_t id = *(const uint32_t *)pvParameters;
     TickType_t period = pdMS_TO_TICKS(W1E3_PERIOD_MS[id]);
-    uint32_t busy_cycles = W1E3_BUSY_WAIT_US[id] * 72U;
     TickType_t last_wake = 0U; 
 
     if (id == 0U) {
@@ -107,10 +151,7 @@ void vTaskPeriodic(void *pvParameters)
     }
 
     for (;;) {
-        uint32_t start = DWT->CYCCNT;
-
-        while ((uint32_t)(DWT->CYCCNT - start) < busy_cycles) {
-        }
+        run_busy_loop(busy_loop_count[id]);
 
         record_response(id, last_wake, DWT->CYCCNT);
 
@@ -130,6 +171,7 @@ void vTaskPeriodic(void *pvParameters)
 
 void rta_app_init(void)
 {
+    calibrate_busy_loops();
     for (uint32_t i = 0U; i < W1E3_NUM_TASKS; ++i) {
         TaskHandle_t task_handle = NULL;
 

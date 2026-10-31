@@ -7,6 +7,18 @@
 void board_init(void);
 void board_panic(const char *file, unsigned line);
 
+static StaticTask_t idle_tcb;
+static StackType_t idle_stack[configMINIMAL_STACK_SIZE];
+
+void vApplicationGetIdleTaskMemory(StaticTask_t **tcb,
+                                   StackType_t **stack,
+                                   configSTACK_DEPTH_TYPE *depth)
+{
+    *tcb = &idle_tcb;
+    *stack = idle_stack;
+    *depth = configMINIMAL_STACK_SIZE;
+}
+
 int main(void)
 {
     board_init();
