@@ -1,10 +1,10 @@
 # W3.1 – PREDICTION (điền TRƯỚC khi chạy, commit trước)
 
 ## Dự đoán kích thước buffer
-- Kích thước DMA ring buffer (byte) bạn chọn: ___, lý do (dựa trên `W3E1_BAUD_BPS`, `W3E1_FRAME_RATE_HZ`,
-  `W3E1_PAYLOAD_LEN_BYTES` trong PARAMS.md và thời gian xử lý IDLE/half/full xấu nhất): ___.
-- Kích thước stream buffer bạn chọn: ___, lý do: ___.
+- Kích thước DMA ring buffer (byte) bạn chọn: *256* bytes, lý do (dựa trên `W3E1_BAUD_BPS`, `W3E1_FRAME_RATE_HZ`,
+  `W3E1_PAYLOAD_LEN_BYTES` trong PARAMS.md và thời gian xử lý IDLE/half/full xấu nhất): Vì với baud rate = 460800 bps và UART 8N1, tốc độ nhận dữ liệu tối đa là 46080 bytes/s, tương đương 21.7 us/byte. DMA Circular Buffer được chia thành 2 nửa, mỗi phần 128 bytes. Khi tốc độ nhận tối đa thì thời gian nhận đầy một nửa khoảng 2.778 ms. Vì vậy ISR cần được phục vụ và dữ liệu của buffer đã hoàn thành cần được chuyển đi trước khi DMA quay lại ghi đè lên vùng này. Với payload 43 bytes, mỗi frame có kích thước 54 bytes. Ở tốc độ gửi 26 frame/s, tốc dộ dữ liệu gửi trung bình khoảng 1404 bytes/s. Thời gian truyền một frame khoảng 1.172 ms. Khoảng nghĩ giữa các frame tạo điều kiện để IDLE interrupt xử lý dữ liệu sớm.
+- Kích thước stream buffer bạn chọn: 512 bytes, lý do: Vì với kích thước frame 54 bytes, stream buffer 512 bytes có thể lưu khoảng 9 frame hoàn chỉnh(tính theo dung lượng danh nghĩa). Ở tốc độ dữ liệu trung bình 1404 bytes/s, dung lượng này tương đương khoảng 365 ms dữ liệu còn tồn đọng khi Parser task chưa kịp xử lý.Stream Buffer giúp tách quá trình nhận dữ liệu bằng DMA/ISR khỏi quá trình phân tích frame của Parser Task. Chọn 512 bytes để có vùng đệm cho những trường hợp parser bị trì hoãn tạm thời, đồng thời hạn chế tiêu thụ RAM của STM32F103C8T6.
 
 ## Dự đoán CPU load
-- Dự đoán CPU load (%) trong lúc stress test 10 phút: ___.
-- Dự đoán có mất byte/khung nào không ở baud được giao, vì sao: ___.
+- Dự đoán CPU load (%) trong lúc stress test 10 phút: khoảng 5%. Với baud rate 460800 bps, payload 43 bytes và tần số gửi 26 frame/s, tốc độ dữ liệu trung bình là 1404 bytes/s. DMA đảm nhiệm việc chuyển dữ liệu từ USART vào RAM nên CPU chủ yếu xử lý ngắt IDLE/HT/TC, chuyển dữ liệu sang Stream Buffer, phân tích frame và tính CRC32. Do tải dữ liệu tương đối thấp, dự đoán CPU load khoảng 5%. Đây là giá trị ước lượng ban đầu, cần kiểm chứng bằng FreeRTOS Run-time Stats..
+- Dự đoán có mất byte/khung nào không ở baud được giao, vì sao: 0 byte mất, 0 khung mất và 0 lỗi CRC32. Với DMA Circular Buffer 256 bytes và Stream Buffer 512 bytes, dự kiến hệ thống có thể tiếp nhận và xử lý dữ liệu ở tốc độ trung bình 1404 bytes/s. DMA kết hợp ngắt IDLE/HT/TC giúp chuyển dữ liệu kịp thời trước khi bị ghi đè, trong khi Stream Buffer cho phép Parser Task xử lý dữ liệu độc lập với ISR. Dự đoán này chỉ đúng nếu thời gian phục vụ ISR đủ ngắn, Stream Buffer không tràn và Parser Task xử lý kịp dữ liệu trong suốt 10 phút thử nghiệm.
