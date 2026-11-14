@@ -1,0 +1,129 @@
++target extended-remote localhost:3333
+`C:\Laptrinhnhung\RTOS_Hard\Intern-261-rtos-course-hard\week3\ex4\w3e4.elf' has changed; re-reading symbols.
+prvCheckTasksWaitingTermination () at /home/nguyenhoangtrieu/student_task/hard/third_party/FreeRTOS-Kernel/tasks.c:6044
+warning: 6044	/home/nguyenhoangtrieu/student_task/hard/third_party/FreeRTOS-Kernel/tasks.c: No such file or directory
++monitor halt
++info address pxCurrentTCB
+Symbol "pxCurrentTCB" is static storage at address 0x20000a60.
++info address pxReadyTasksLists
+Symbol "pxReadyTasksLists" is static storage at address 0x20000a64.
++x/256xw 0x20002200
+0x20002200:	0x5fd55592	0x004c00f7	0x82f62233	0xb1a6afaf
+0x20002210:	0xc80d40c5	0x42247f3b	0x05c750e3	0x9fe8dfca
+0x20002220:	0x77f8431a	0x56105f9c	0xff83b565	0x73b27f75
+0x20002230:	0xf395da0e	0x48a68d54	0x364dd000	0x2d6034da
+0x20002240:	0xf95da4b0	0x0cd2d774	0x79fd9314	0xb500c671
+0x20002250:	0x7d568a12	0x13877153	0xc5eba430	0x52eed97b
+0x20002260:	0x41bc4287	0x183bef53	0xdfbc7000	0x193a5ca7
+0x20002270:	0xff4ec59b	0x94526944	0x6a65043a	0x8b4bdc7e
+0x20002280:	0x77f50340	0x0a78a3dd	0xf9a434e8	0x3f00c7e8
+0x20002290:	0xf9e0598d	0xdcd8bbe9	0x95b54733	0x0a06db89
+0x200022a0:	0xf2191874	0x850213de	0xd2f59775	0xeb13f3e7
+0x200022b0:	0x6fa6c3e5	0x581dc10e	0xe31c3844	0x264088bc
+0x200022c0:	0xf599467b	0x0346c05e	0x7f1d057e	0x99da9bc5
+0x200022d0:	0x7ef89c44	0xd0065ce9	0x4a7615ef	0x389c31f7
+0x200022e0:	0xe7ffac5c	0xe389927f	0x5e4f2256	0x07916d53
+0x200022f0:	0x07f65eef	0x8c51552f	0xdfe98a70	0x1008fd62
+0x20002300:	0xd4b352f9	0x82f2faef	0x0e88b123	0x98323ef9
+0x20002310:	0x3f4fa987	0x573bee55	0xb7cf81cd	0xe4a9d3f2
+0x20002320:	0xfadfa01c	0x308106d7	0xbec68544	0x09aba0d8
+0x20002330:	0xbf7d360a	0x5a58d6ff	0x69bb42b2	0x00a6c697
+0x20002340:	0x9e3730a6	0xd48aeab7	0xb6126588	0x58303cf0
+0x20002350:	0xbbae9103	0x9d8ce176	0x336ea37e	0x8170b8dd
+0x20002360:	0x19abd100	0x0f0434af	0x8ab5fe37	0x6e51bdff
+0x20002370:	0x02fc7200	0x1489bebf	0xfa9f9e32	0x28e2fffd
+0x20002380:	0xd8692143	0x19d00edf	0xbffd3d25	0x6a25afea
+0x20002390:	0x5ff9a73a	0xc4484fec	0x66f51096	0x56a191f7
+0x200023a0:	0xbfed3a01	0x8c4a83f5	0x733215f3	0x7816f6f5
+0x200023b0:	0x9cab8944	0x26f23e0b	0x047b0bab	0x08a4fccf
+0x200023c0:	0xd6a76656	0x17a1bfb9	0xd74a2513	0x4d458fe6
+0x200023d0:	0xfeac2a92	0xcee031ae	0x4a3c00a2	0x4490c685
+0x200023e0:	0xd6872c1e	0x352cfa52	0x5e436082	0xce386152
+0x200023f0:	0x7717b503	0xd13a7f78	0xe672538c	0xa099b2e6
+0x20002400:	0x8f83a21c	0x1c25f8f3	0xa86893b9	0x44041abb
+0x20002410:	0x424f8788	0x51295ff5	0xfee41300	0x954083fb
+0x20002420:	0x5f6f1c1c	0x3fb0ec7e	0xfd7bb22a	0x105aee0c
+0x20002430:	0xefdf158c	0xbf28f6fb	0xf9ea90a9	0x00548dc7
+0x20002440:	0x97b968ee	0x861df05b	0xbb39caea	0x309ae1c6
+0x20002450:	0x1d5c0748	0x988390c4	0xbfe35781	0x0ab4f4da
+0x20002460:	0xf9274c19	0x47b0f55d	0xa6ef6049	0x420aee1b
+0x20002470:	0x695a68be	0x96568faf	0xbd3f9497	0xa3a9a135
+0x20002480:	0x74955d70	0xaf80fd2f	0xb2afb9a9	0xd1c809e5
+0x20002490:	0x59663b91	0xcc994b17	0x6e7f9f80	0x00aabcd7
+0x200024a0:	0xa9fc9403	0x1091500f	0x53609543	0x726f9ffa
+0x200024b0:	0xd84203a0	0xe8083a6b	0xbe330d65	0x0a80b3d1
+0x200024c0:	0xa79f6028	0x1d481f69	0xe3388efa	0xc4a6d1ef
+0x200024d0:	0xd9885a8d	0x93150a4f	0xdbfcc004	0xb5979ff8
+0x200024e0:	0xa2110840	0xd828fd7d	0x7f000401	0x1a2ecb7f
+0x200024f0:	0xc3631960	0x65114e3a	0xf7db035d	0x8234eca7
+0x20002500:	0x92d7454e	0x39b00a95	0xfb7f3056	0x4755ab04
+0x20002510:	0x4116c67d	0xac5d9496	0xe69f6a53	0xc76e5af8
+0x20002520:	0xef96210c	0x604469fd	0xaf7bb442	0xe1a9c064
+0x20002530:	0x59480806	0x8919e798	0x7d3d4971	0x0444975e
+0x20002540:	0x3bbd602e	0x38886ff4	0xfe04d2b0	0x102a996e
+0x20002550:	0x0d8f10f5	0x34a8d49a	0x1e57296e	0x49747600
+0x20002560:	0x527b640c	0x72e81595	0xdcf17610	0x117bf0bb
+0x20002570:	0xc9bf2376	0x5b6c5f64	0xc6ff60c3	0xc256ecff
+0x20002580:	0xc0ec4160	0x3490dbad	0x7b7999ab	0x40cdd9fb
+0x20002590:	0x6ab129ca	0xf2de18a3	0x5e6b5ee0	0x442b07ed
+0x200025a0:	0xf6f13ead	0x9de8b5b5	0x3576c2bc	0x6f40ebbc
+0x200025b0:	0x3c16bb52	0x443493b5	0xa1cf9ce3	0x1f06dfd9
+0x200025c0:	0xdf47a010	0x02d1e243	0xa7f728c7	0xc948bb4f
+0x200025d0:	0x5b372018	0xa8481d5d	0x03b22a0c	0x6408976e
+0x200025e0:	0xdf142146	0x9402fc35	0x0fe18d2c	0x1dad63b1
+0x200025f0:	0xbddd0048	0xa5086ddd	0x395302e9	0xec2d9977
++p xTickCount
+$1 = 30153
++p uxCurrentNumberOfTasks
+$2 = 4
++p *(TCB_t *)pxCurrentTCB
+$3 = {pxTopOfStack = 0x20000410 <s_idle_stack+428>, xStateListItem = {xItemValue = 0, pxNext = 0x20000a6c <pxReadyTasksLists+8>, pxPrevious = 0x20000a6c <pxReadyTasksLists+8>, pvOwner = 0x20000464 <s_idle_tcb>, pvContainer = 0x20000a64 <pxReadyTasksLists>}, xEventListItem = {xItemValue = 8, pxNext = 0x0, pxPrevious = 0x0, pvOwner = 0x20000464 <s_idle_tcb>, pvContainer = 0x0}, uxPriority = 0, pxStack = 0x20000264 <s_idle_stack>, pcTaskName = "IDLE", '\000' <repeats 11 times>, uxTCBNumber = 3, uxTaskNumber = 0, uxBasePriority = 0, uxMutexesHeld = 0, ulNotifiedValue = {0}, ucNotifyState = "", ucStaticallyAllocated = 2 '\002'}
++p pxReadyTasksLists
+$4 = {{uxNumberOfItems = 1, pxIndex = 0x20000468 <s_idle_tcb+4>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000468 <s_idle_tcb+4>, pxPrevious = 0x20000468 <s_idle_tcb+4>}}, {uxNumberOfItems = 0, pxIndex = 0x20000a80 <pxReadyTasksLists+28>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000a80 <pxReadyTasksLists+28>, pxPrevious = 0x20000a80 <pxReadyTasksLists+28>}}, {uxNumberOfItems = 0, pxIndex = 0x20000a94 <pxReadyTasksLists+48>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000a94 <pxReadyTasksLists+48>, pxPrevious = 0x20000a94 <pxReadyTasksLists+48>}}, {uxNumberOfItems = 0, pxIndex = 0x20000aa8 <pxReadyTasksLists+68>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000aa8 <pxReadyTasksLists+68>, pxPrevious = 0x20000aa8 <pxReadyTasksLists+68>}}, {uxNumberOfItems = 0, pxIndex = 0x20000abc <pxReadyTasksLists+88>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000abc <pxReadyTasksLists+88>, pxPrevious = 0x20000abc <pxReadyTasksLists+88>}}, {uxNumberOfItems = 0, pxIndex = 0x20000ad0 <pxReadyTasksLists+108>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000ad0 <pxReadyTasksLists+108>, pxPrevious = 0x20000ad0 <pxReadyTasksLists+108>}}, {uxNumberOfItems = 0, pxIndex = 0x20000ae4 <pxReadyTasksLists+128>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000ae4 <pxReadyTasksLists+128>, pxPrevious = 0x20000ae4 <pxReadyTasksLists+128>}}, {uxNumberOfItems = 0, pxIndex = 0x20000af8 <pxReadyTasksLists+148>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000af8 <pxReadyTasksLists+148>, pxPrevious = 0x20000af8 <pxReadyTasksLists+148>}}}
++p xSuspendedTaskList
+$5 = {uxNumberOfItems = 3, pxIndex = 0x20000b68 <xSuspendedTaskList+8>, xListEnd = {xItemValue = 4294967295, pxNext = 0x2000020c <s_timer_tcb+4>, pxPrevious = 0x200006c4 <s_task_b_tcb+4>}}
++p *pxDelayedTaskList
+$6 = {uxNumberOfItems = 0, pxIndex = 0x20000b0c <xDelayedTaskList1+8>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000b0c <xDelayedTaskList1+8>, pxPrevious = 0x20000b0c <xDelayedTaskList1+8>}}
++p *pxOverflowDelayedTaskList
+$7 = {uxNumberOfItems = 0, pxIndex = 0x20000b20 <xDelayedTaskList2+8>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000b20 <xDelayedTaskList2+8>, pxPrevious = 0x20000b20 <xDelayedTaskList2+8>}}
++p *(TCB_t *)&s_task_a_tcb
+warning: could not convert 's_task_a_tcb' from the host encoding (CP1252) to UTF-32.
+This normally should not happen, please file a bug report.
+$8 = {pxTopOfStack = 0x200008a0 <s_task_a_stack+388>, xStateListItem = {xItemValue = 100, pxNext = 0x200006c4 <s_task_b_tcb+4>, pxPrevious = 0x2000020c <s_timer_tcb+4>, pvOwner = 0x2000091c <s_task_a_tcb>, pvContainer = 0x20000b60 <xSuspendedTaskList>}, xEventListItem = {xItemValue = 7, pxNext = 0x200009ac <s_mutex2_storage+44>, pxPrevious = 0x200009ac <s_mutex2_storage+44>, pvOwner = 0x2000091c <s_task_a_tcb>, pvContainer = 0x200009a4 <s_mutex2_storage+36>}, uxPriority = 1, pxStack = 0x2000071c <s_task_a_stack>, pcTaskName = "task_a\000\000\000\000\000\000\000\000\000", uxTCBNumber = 1, uxTaskNumber = 0, uxBasePriority = 1, uxMutexesHeld = 1, ulNotifiedValue = {0}, ucNotifyState = "", ucStaticallyAllocated = 2 '\002'}
++p *(TCB_t *)&s_task_b_tcb
+$9 = {pxTopOfStack = 0x20000640 <s_task_b_stack+384>, xStateListItem = {xItemValue = 120, pxNext = 0x20000b68 <xSuspendedTaskList+8>, pxPrevious = 0x20000920 <s_task_a_tcb+4>, pvOwner = 0x200006c0 <s_task_b_tcb>, pvContainer = 0x20000b60 <xSuspendedTaskList>}, xEventListItem = {xItemValue = 7, pxNext = 0x200009fc <s_mutex1_storage+44>, pxPrevious = 0x200009fc <s_mutex1_storage+44>, pvOwner = 0x200006c0 <s_task_b_tcb>, pvContainer = 0x200009f4 <s_mutex1_storage+36>}, uxPriority = 1, pxStack = 0x200004c0 <s_task_b_stack>, pcTaskName = "task_b\000\000\000\000\000\000\000\000\000", uxTCBNumber = 2, uxTaskNumber = 0, uxBasePriority = 1, uxMutexesHeld = 1, ulNotifiedValue = {0}, ucNotifyState = "", ucStaticallyAllocated = 2 '\002'}
++p *(Queue_t *)s_mutex1
+$10 = {pcHead = 0x0, pcWriteTo = 0x200009d0 <s_mutex1_storage> "", u = {xQueue = {pcTail = 0x2000091c <s_task_a_tcb> " \b", pcReadFrom = 0x0}, xSemaphore = {xMutexHolder = 0x2000091c <s_task_a_tcb>, uxRecursiveCallCount = 0}}, xTasksWaitingToSend = {uxNumberOfItems = 0, pxIndex = 0x200009e8 <s_mutex1_storage+24>, xListEnd = {xItemValue = 4294967295, pxNext = 0x200009e8 <s_mutex1_storage+24>, pxPrevious = 0x200009e8 <s_mutex1_storage+24>}}, xTasksWaitingToReceive = {uxNumberOfItems = 1, pxIndex = 0x200009fc <s_mutex1_storage+44>, xListEnd = {xItemValue = 4294967295, pxNext = 0x200006d8 <s_task_b_tcb+24>, pxPrevious = 0x200006d8 <s_task_b_tcb+24>}}, uxMessagesWaiting = 0, uxLength = 1, uxItemSize = 0, cRxLock = -1 '\377', cTxLock = -1 '\377', ucStaticallyAllocated = 1 '\001', uxQueueNumber = 0, ucQueueType = 1 '\001'}
++p *(Queue_t *)s_mutex2
+$11 = {pcHead = 0x0, pcWriteTo = 0x20000980 <s_mutex2_storage> "", u = {xQueue = {pcTail = 0x200006c0 <s_task_b_tcb> "@\006", pcReadFrom = 0x0}, xSemaphore = {xMutexHolder = 0x200006c0 <s_task_b_tcb>, uxRecursiveCallCount = 0}}, xTasksWaitingToSend = {uxNumberOfItems = 0, pxIndex = 0x20000998 <s_mutex2_storage+24>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000998 <s_mutex2_storage+24>, pxPrevious = 0x20000998 <s_mutex2_storage+24>}}, xTasksWaitingToReceive = {uxNumberOfItems = 1, pxIndex = 0x200009ac <s_mutex2_storage+44>, xListEnd = {xItemValue = 4294967295, pxNext = 0x20000934 <s_task_a_tcb+24>, pxPrevious = 0x20000934 <s_task_a_tcb+24>}}, uxMessagesWaiting = 0, uxLength = 1, uxItemSize = 0, cRxLock = -1 '\377', cTxLock = -1 '\377', ucStaticallyAllocated = 1 '\001', uxQueueNumber = 0, ucQueueType = 1 '\001'}
++p sizeof(s_task_a_stack)
+$12 = 512
++p sizeof(s_task_b_stack)
+$13 = 512
++x/32xw &s_task_a_stack
+0x2000071c <s_task_a_stack>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000072c <s_task_a_stack+16>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000073c <s_task_a_stack+32>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000074c <s_task_a_stack+48>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000075c <s_task_a_stack+64>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000076c <s_task_a_stack+80>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000077c <s_task_a_stack+96>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x2000078c <s_task_a_stack+112>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
++x/32xw &s_task_b_stack
+0x200004c0 <s_task_b_stack>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x200004d0 <s_task_b_stack+16>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x200004e0 <s_task_b_stack+32>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x200004f0 <s_task_b_stack+48>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x20000500 <s_task_b_stack+64>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x20000510 <s_task_b_stack+80>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x20000520 <s_task_b_stack+96>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
+0x20000530 <s_task_b_stack+112>:	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5	0xa5a5a5a5
++p/x *(unsigned int *)0xE000ED28
+$14 = 0x0
++p/x *(unsigned int *)0xE000ED2C
+$15 = 0x0
++x/3xw 0xE000E100
+0xe000e100:	0x00000000	0x00000000	0x00000000
++x/wx 0xE000ED20
+0xe000ed20:	0xf0f00000
++set logging enabled off
