@@ -21,10 +21,20 @@ void tracer_on_switched_out(void);
 #define configMINIMAL_STACK_SIZE 128U
 #define configTOTAL_HEAP_SIZE (8U * 1024U)
 #define configMAX_TASK_NAME_LEN 16
+#if defined(APP_TICKLESS_RTC) && APP_TICKLESS_RTC
+#define configUSE_TICKLESS_IDLE 2
+void tickless_suppress_ticks_and_sleep(uint32_t expected_idle_ticks);
+#define portSUPPRESS_TICKS_AND_SLEEP(ticks) \
+    tickless_suppress_ticks_and_sleep((uint32_t)(ticks))
+#else
 #define configUSE_TICKLESS_IDLE 0
+#endif
 #define configUSE_16_BIT_TICKS 0
 #define configIDLE_SHOULD_YIELD 1
-#define configSUPPORT_DYNAMIC_ALLOCATION 1
+#ifndef APP_STATIC
+#define APP_STATIC 0
+#endif
+#define configSUPPORT_DYNAMIC_ALLOCATION (!APP_STATIC)
 #define configSUPPORT_STATIC_ALLOCATION 1
 #define configUSE_MUTEXES 1
 #define configUSE_TIMERS 0
@@ -32,6 +42,16 @@ void tracer_on_switched_out(void);
 #define configTIMER_QUEUE_LENGTH 4
 #define configTIMER_TASK_STACK_DEPTH 192U
 #define configUSE_TRACE_FACILITY 1
+#if defined(APP_UART_DMA) && APP_UART_DMA
+void uart_runtime_init(void);
+uint32_t uart_runtime_counter(void);
+#define configGENERATE_RUN_TIME_STATS 1
+/* Use uxTaskGetSystemState with a static array: the kernel's text
+   formatting helpers allocate temporary memory. */
+#define configUSE_STATS_FORMATTING_FUNCTIONS 0
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() uart_runtime_init()
+#define portGET_RUN_TIME_COUNTER_VALUE() uart_runtime_counter()
+#endif
 #define configUSE_APPLICATION_TASK_TAG 1
 #define configCHECK_FOR_STACK_OVERFLOW 2
 #define configUSE_MALLOC_FAILED_HOOK 1

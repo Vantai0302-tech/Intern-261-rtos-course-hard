@@ -42,8 +42,7 @@ static i2c1_status_t recover_after_isr_error(i2c1_status_t result)
     }
 
     if (result != I2C1_ERR_TIMEOUT) {
-        /* Let a STOP triggered by the error ISR finish before deciding that
-           SDA or the peripheral BUSY flag is genuinely stuck. */
+  
         uint32_t start = DWT->CYCCNT;
         uint32_t wait_cycles = SystemCoreClock / 1000UL;
         while ((uint32_t)(DWT->CYCCNT - start) < wait_cycles) {

@@ -1,0 +1,3 @@
+stress: baud=460800 payload=43B rate=26.0Hz duration=600.0s simulate=False
+sent=5408 received=5408 crc_errors=0 lost_estimate=0
+RESULT: PASS (0 CRC errors, 0 lost)

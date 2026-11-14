@@ -3,6 +3,11 @@
 #include "gpio.h"
 #include "blinky.h"
 #include "include/params.h"
+#if APP_STATIC
+#include "static_support.h"
+static StaticTask_t blink_tcb[2];
+static StackType_t blink_stack[2][192U];
+#endif
 
 static void blink(TickType_t period, unsigned probe_pin)
 {
@@ -36,8 +41,17 @@ void blinky_app_init(void)
     gpio_write(GPIOA, 1U, 0U);
     gpio_write(GPIOA, 2U, 0U);
 
+#if APP_STATIC
+    TaskHandle_t a = xTaskCreateStatic(vTaskBlinkA, "blinkA", 192U, NULL, 1U,
+                                       blink_stack[0], &blink_tcb[0]);
+    TaskHandle_t b = xTaskCreateStatic(vTaskBlinkB, "blinkB", 192U, NULL, 1U,
+                                       blink_stack[1], &blink_tcb[1]);
+    w1_static_register_task(a, "blinkA", 192U);
+    w1_static_register_task(b, "blinkB", 192U);
+#else
     BaseType_t a = xTaskCreate(vTaskBlinkA, "blinkA", 192U, NULL, 1U, NULL);
     BaseType_t b = xTaskCreate(vTaskBlinkB, "blinkB", 192U, NULL, 1U, NULL);
 
     configASSERT(a == pdPASS && b == pdPASS);
+#endif
 }

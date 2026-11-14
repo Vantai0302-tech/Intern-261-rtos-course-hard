@@ -5,6 +5,14 @@
 #include "tracer.h"
 #include "uart.h"
 #include "stm32f1xx.h"
+#if APP_STATIC
+#include "static_support.h"
+static StaticTask_t rta_tcb[W1E3_NUM_TASKS];
+static StackType_t rta_stack[W1E3_NUM_TASKS][192U];
+static const char *const rta_names[W1E3_NUM_TASKS] = {
+    "RM0", "RM1", "RM2", "RM3"
+};
+#endif
 
 static uint32_t task_id[W1E3_NUM_TASKS] = {0U, 1U, 2U, 3U};
 static uint32_t tick_zero_cycles;
@@ -158,10 +166,16 @@ void vTaskPeriodic(void *pvParameters)
         if (id == (W1E3_NUM_TASKS - 1U)) {
             int command = uart_getc();
             if ((command == 'd') || (command == 'D')) {
+#if APP_STATIC
+                w1_static_uart_lock();
+#endif
                 dump_response_uart();
                 uart_puts("# switch trace: cycles,tag,IN|OUT\r\n");
                 (void)tracer_dump_uart();
                 uart_puts("# end\r\n");
+#if APP_STATIC
+                w1_static_uart_unlock();
+#endif
             }
         }
 
@@ -175,6 +189,11 @@ void rta_app_init(void)
     for (uint32_t i = 0U; i < W1E3_NUM_TASKS; ++i) {
         TaskHandle_t task_handle = NULL;
 
+#if APP_STATIC
+        task_handle = xTaskCreateStatic(vTaskPeriodic, rta_names[i], 192U,
+                                         &task_id[i], 1U, rta_stack[i], &rta_tcb[i]);
+        w1_static_register_task(task_handle, rta_names[i], 192U);
+#else
         BaseType_t status = xTaskCreate(
             vTaskPeriodic,
             "RM_Task",
@@ -185,6 +204,7 @@ void rta_app_init(void)
         );
 
         configASSERT(status == pdPASS);
+#endif
 
         vTaskSetApplicationTaskTag(task_handle, task_tags[i]);
         vTaskPrioritySet(task_handle, W1E3_NUM_TASKS - i);

@@ -2,6 +2,11 @@
 #include "task.h"
 #include "tracer.h"
 #include "uart.h"
+#if APP_STATIC
+#include "static_support.h"
+static StaticTask_t trace_tcb[3];
+static StackType_t trace_stack[3][192U];
+#endif
 
 void board_init(void);
 void board_panic(const char *file, unsigned line);
@@ -56,9 +61,15 @@ static void task_3(void *parameter)
         int command = uart_getc();
 
         if ((command == 'd') || (command == 'D')) {
+#if APP_STATIC
+            w1_static_uart_lock();
+#endif
             uart_puts("# trace dump\r\n");
             (void)tracer_dump_uart();
             uart_puts("# end\r\n");
+#if APP_STATIC
+            w1_static_uart_unlock();
+#endif
         }
 
         (void)xTaskDelayUntil(
@@ -76,6 +87,18 @@ int main(void)
     board_init();
     tracer_init();
 
+#if APP_STATIC
+    task_1_handle = xTaskCreateStatic(task_1, "trace1", 192U, NULL, 3U,
+                                     trace_stack[0], &trace_tcb[0]);
+    task_2_handle = xTaskCreateStatic(task_2, "trace2", 192U, NULL, 2U,
+                                     trace_stack[1], &trace_tcb[1]);
+    task_3_handle = xTaskCreateStatic(task_3, "trace3", 192U, NULL, 1U,
+                                     trace_stack[2], &trace_tcb[2]);
+    w1_static_register_task(task_1_handle, "trace1", 192U);
+    w1_static_register_task(task_2_handle, "trace2", 192U);
+    w1_static_register_task(task_3_handle, "trace3", 192U);
+    w1_static_support_init();
+#else
     configASSERT(
         xTaskCreate(
             task_1,
@@ -102,6 +125,7 @@ int main(void)
             NULL,
             1U,
             &task_3_handle) == pdPASS);
+#endif
 
     vTaskSetApplicationTaskTag(task_1_handle, task_1_tag);
     vTaskSetApplicationTaskTag(task_2_handle, task_2_tag);

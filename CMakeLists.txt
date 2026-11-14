@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 set(WEEK1_DIR "${CMAKE_CURRENT_SOURCE_DIR}/week1" CACHE PATH "Week 1 source directory")
 set(WEEK2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/week2" CACHE PATH "Week 2 source directory")
+set(WEEK3_DIR "${CMAKE_CURRENT_SOURCE_DIR}/week3" CACHE PATH "Week 3 source directory")
 set(FREERTOS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/FreeRTOS-Kernel" CACHE PATH "FreeRTOS V11.1.0")
 set(CMSIS_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/CMSIS/Core/Include" CACHE PATH "CMSIS Core headers")
 set(CMSIS_DEVICE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/CMSIS/Device/Include" CACHE PATH "STM32F1 device headers")
@@ -93,12 +94,47 @@ add_firmware(w2e3_ceiling_inversion ex3 1 1 -O0
     ${WEEK2_DIR}/ex3/ceiling_inversion_main.c
     ${WEEK2_DIR}/ex3/priority_ceiling.c)
 target_include_directories(w2e3_ceiling_inversion BEFORE PRIVATE ${WEEK2_DIR}/ex3/include)
-# add_firmware(w1e3 ex3 0 1 -O0 ${WEEK1_DIR}/ex3/main.c ${WEEK1_DIR}/ex3/rta_app.c)
-# add_firmware(w1e4 ex4 0 0 -O0
-#     ${WEEK1_DIR}/ex4/main.c
-#     ${WEEK1_DIR}/ex4/heap_experiment.c)
+add_firmware(w1e3 ex3 0 1 -O0 ${WEEK1_DIR}/ex3/main.c ${WEEK1_DIR}/ex3/rta_app.c)
+add_firmware(w1e4 ex4 0 0 -O0
+    ${WEEK1_DIR}/ex4/main.c
+    ${WEEK1_DIR}/ex4/heap_experiment.c)
+
+add_firmware(w1e1_static ex1 1 0 -O0
+    ${WEEK1_DIR}/ex1/main.c ${WEEK1_DIR}/ex1/blinky.c
+    ${WEEK1_DIR}/ex4/static_support.c)
+target_include_directories(w1e1_static PRIVATE ${WEEK1_DIR}/ex4/include)
+
+add_firmware(w1e2_static ex2 1 1 -O0
+    ${WEEK1_DIR}/ex2/main.c ${WEEK1_DIR}/ex4/static_support.c)
+target_include_directories(w1e2_static PRIVATE ${WEEK1_DIR}/ex4/include)
+
+# W1.4 final static application reuses the four periodic tasks from W1.3.
+add_firmware(w1e4_static ex3 1 1 -O0
+    ${WEEK1_DIR}/ex3/main.c ${WEEK1_DIR}/ex3/rta_app.c
+    ${WEEK1_DIR}/ex4/static_support.c)
+target_include_directories(w1e4_static PRIVATE ${WEEK1_DIR}/ex4/include)
 add_firmware(w2e4 ex4 1 1 -O0
     ${WEEK2_DIR}/ex4/main.c
     ${WEEK2_DIR}/ex4/sync_app.c
     ${FREERTOS_DIR}/event_groups.c)
 target_include_directories(w2e4 BEFORE PRIVATE ${WEEK2_DIR}/ex4/include)
+
+add_firmware(w3e1 ex1 1 0 -O0
+    ${WEEK3_DIR}/ex1/main.c
+    ${WEEK3_DIR}/ex1/uart_dma_rx.c
+    ${FREERTOS_DIR}/stream_buffer.c)
+target_include_directories(w3e1 BEFORE PRIVATE ${WEEK3_DIR}/ex1/include)
+target_compile_definitions(w3e1 PRIVATE APP_UART_DMA=1)
+
+add_firmware(w3e2 ex2 1 0 -O0
+    ${WEEK3_DIR}/ex2/main.c
+    ${WEEK3_DIR}/ex2/tickless_rtc.c)
+target_include_directories(w3e2 BEFORE PRIVATE ${WEEK3_DIR}/ex2/include)
+target_compile_definitions(w3e2 PRIVATE APP_TICKLESS_RTC=1)
+
+add_firmware(w3e3 ex3 1 0 -O0
+    ${WEEK3_DIR}/ex3/main.c
+    ${WEEK3_DIR}/ex3/fault_postmortem.c)
+
+target_include_directories(w3e3 BEFORE PRIVATE
+    ${WEEK3_DIR}/ex3/include)
