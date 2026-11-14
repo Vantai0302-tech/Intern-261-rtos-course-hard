@@ -1,4 +1,4 @@
-#include "FreeRTOS.h"
+﻿#include "FreeRTOS.h"
 #include "task.h"
 #include "stm32f1xx.h"
 #include "tickless_rtc.h"
@@ -153,8 +153,7 @@ void tickless_suppress_ticks_and_sleep(uint32_t expected_idle_ticks)
     while ((RTC->CRL & RTC_CRL_RTOFF) == 0U) {
     }
 
-    if ((uint32_t)(rtc_read_counter() - rtc_start) < sleep_counts &&
-        (SCB->ICSR & SCB_ICSR_ISRPENDING_Msk) == 0U) {
+    if ((uint32_t)(rtc_read_counter() - rtc_start) < sleep_counts) {
         PWR->CR &= ~PWR_CR_PDDS;
         PWR->CR |= PWR_CR_LPDS;
         SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
@@ -219,3 +218,4 @@ int32_t tickless_rtc_get_accumulated_drift(void)
     /* Sai số quy đổi, tính theo số đếm RTC. */
     return -(int32_t)(conversion_remainder / configCPU_CLOCK_HZ);
 }
+

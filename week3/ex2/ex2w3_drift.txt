@@ -1,0 +1,12 @@
+2026-11-14T13:26:03.836 -> mcu_ticks=0 mcu_ms=0 pc_elapsed_ms=0.000 drift_ms=0.000
+2026-11-14T13:27:03.836 -> mcu_ticks=60000 mcu_ms=60000 pc_elapsed_ms=60000.581 drift_ms=-0.581
+2026-11-14T13:28:03.836 -> mcu_ticks=120000 mcu_ms=120000 pc_elapsed_ms=120000.506 drift_ms=-0.506
+2026-11-14T13:29:03.836 -> mcu_ticks=180000 mcu_ms=180000 pc_elapsed_ms=180000.280 drift_ms=-0.280
+2026-11-14T13:30:03.836 -> mcu_ticks=240000 mcu_ms=240000 pc_elapsed_ms=240000.041 drift_ms=-0.041
+2026-11-14T13:31:03.835 -> mcu_ticks=300000 mcu_ms=300000 pc_elapsed_ms=299999.838 drift_ms=0.162
+2026-11-14T13:32:03.835 -> mcu_ticks=360000 mcu_ms=360000 pc_elapsed_ms=359999.747 drift_ms=0.253
+2026-11-14T13:33:03.835 -> mcu_ticks=420000 mcu_ms=420000 pc_elapsed_ms=419999.557 drift_ms=0.443
+2026-11-14T13:34:03.835 -> mcu_ticks=480000 mcu_ms=480000 pc_elapsed_ms=479999.064 drift_ms=0.936
+2026-11-14T13:35:03.834 -> mcu_ticks=540000 mcu_ms=540000 pc_elapsed_ms=539998.553 drift_ms=1.447
+2026-11-14T13:36:03.833 -> mcu_ticks=600000 mcu_ms=600000 pc_elapsed_ms=599997.518 drift_ms=2.482
+COMPLETE drift_ms=2.482 drift_ppm=4.137 bound_ppm=65
