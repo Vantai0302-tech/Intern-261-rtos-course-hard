@@ -1,0 +1,20 @@
+UNALIGNED_WORD_ACCESS
+arm-none-eabi-addr2line -e week3/ex3/w3e3_unaligned.elf -f -C -i 0x0800170C
+trigger_unaligned_fault
+C:/Laptrinhnhung/RTOS_Hard/Intern-261-rtos-course-hard/week3/ex3/main.c:24
+
+INVALID_PC_JUMP
+arm-none-eabi-addr2line -e week3/ex3/w3e3_mpu.elf -f -C -i 0x0800174A
+trigger_invalid_pc_fault
+C:/Laptrinhnhung/RTOS_Hard/Intern-261-rtos-course-hard/week3/ex3/main.c:45
+
+NULL_DEREF_WRITE
+arm-none-eabi-addr2line -e week3/ex3/w3e3_mpu.elf -f -C -i 0x080017FC
+trigger_null_fault
+C:/Laptrinhnhung/RTOS_Hard/Intern-261-rtos-course-hard/week3/ex3/main.c:97
+
+STACK_OVERFLOW_WRITE
+arm-none-eabi-addr2line -e week3/ex3/w3e3_mpu.elf -f -C -i 0x08001832
+trigger_stack_fault
+C:/Laptrinhnhung/RTOS_Hard/Intern-261-rtos-course-hard/week3/ex3/main.c:117
+

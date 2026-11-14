@@ -1,0 +1,12 @@
+Triggering unaligned fault...
+CANARY: 0x742C51A4
+PC: 0x0800170C
+LR: 0x0800170B
+xPSR: 0x21000000
+CFSR: 0x01000000
+HFSR: 0x40000000
+BFAR: INVALID
+MMFARINVALID
+TASK: FaultTest
+============================================
+Press 'u' to trigger UNALIGNED_WORD_ACCESS
