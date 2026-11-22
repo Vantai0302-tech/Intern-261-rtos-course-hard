@@ -14,8 +14,8 @@
 - Task nào có R_i gần D_i nhất (margin nhỏ nhất)? ___, margin dự đoán: ___ us.
 
 ## Dự đoán ngân sách
-- Tổng RAM tĩnh dự đoán (bytes), so với `W4E1_RAM_BUDGET_BYTES`: ___ / ___ bytes.
-- Tổng CPU utilization dự đoán (%), so với `W4E1_CPU_BUDGET_PERCENT_MAX`: ___ / ___ %.
+- Tổng RAM tĩnh dự đoán (bytes), so với `W4E1_RAM_BUDGET_BYTES`: ___ / 16114 bytes.
+- Tổng CPU utilization dự đoán (%), so với `W4E1_CPU_BUDGET_PERCENT_MAX`: ___ / 81 %.
 
 ## Rủi ro đã lường trước
 - Nếu I2C1 bus-recovery (W2.1) xảy ra đúng lúc control loop tới hạn: dự đoán ảnh hưởng tới WCRT của `control`: control có priority cao hơn IMU và không chờ mutex I2C nên có thể chạy ngắt lên task recovery. WCRT vẫn có thể tăng do ISR hoặc đoạn tắt ngắt; cần tính các phần này khi kiểm tra deadline và jitter 109 us.
