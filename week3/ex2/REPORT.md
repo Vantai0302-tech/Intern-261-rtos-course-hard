@@ -1,14 +1,5 @@
 ﻿# W3.2 – REPORT
 
-## Số đo
-
-- Bảng dòng tiêu thụ (chưa đo):
-
-| Trạng thái | Dòng đo (mA / µA) |
-|---|---|
-| Active | |
-| Idle (STOP mode) | |
-
 - Bảng trôi tick trong `W3E2_DRIFT_TEST_WINDOW_MIN = 10` phút. Hai cột thời gian tính từ mốc UART đầu tiên; thời gian PC lấy bằng đồng hồ monotonic trong `log_drift.py`.
 
 | Giờ MCU (ms) | Giờ PC đã trôi (ms) | Chênh lệch (ms) |
