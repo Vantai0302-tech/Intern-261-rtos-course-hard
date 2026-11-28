@@ -138,3 +138,38 @@ add_firmware(w3e3 ex3 1 0 -O0
 
 target_include_directories(w3e3 BEFORE PRIVATE
     ${WEEK3_DIR}/ex3/include)
+
+add_firmware(w4e2 ex2 1 0 -O0
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/mixed_criticality_system.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/i2c1_system.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/uart_system.c
+    ${WEEK3_DIR}/ex2/tickless_rtc.c
+    ${FREERTOS_DIR}/stream_buffer.c)
+target_include_directories(w4e2 BEFORE PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/include
+    ${WEEK2_DIR}/ex1/include ${WEEK3_DIR}/ex1/include ${WEEK3_DIR}/ex2/include)
+target_compile_definitions(w4e2 PRIVATE APP_TICKLESS_RTC=1)
+
+
+add_firmware(w4e3 ex3 1 0 -O0
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex3/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex3/fault_injection.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/mixed_criticality_system.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/i2c1_system.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/uart_system.c
+    ${WEEK3_DIR}/ex2/tickless_rtc.c
+    ${FREERTOS_DIR}/stream_buffer.c
+    ${FREERTOS_DIR}/event_groups.c)
+
+target_include_directories(w4e3 BEFORE PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex3
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex2/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/week4/ex3/include
+    ${WEEK2_DIR}/ex1/include
+    ${WEEK3_DIR}/ex1/include
+    ${WEEK3_DIR}/ex2/include)
+
+target_compile_definitions(w4e3 PRIVATE APP_TICKLESS_RTC=1)

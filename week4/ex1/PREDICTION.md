@@ -6,11 +6,11 @@
 
 | Role | T (us) | D (us) | C (us) | R (us) dự đoán | Priority |
 |---|---|---|---|---|---|
-| control | 1000 | 1000 | 30 | 30 | 5|
-| imu | 2000 | 2000 | 100 | 130 | 4|
-| telemetry | 38462 | 38462 | 250 | 380 | 3|
-| shell | 50000 | 50000 | 150 | 530 | 2|
-| idle_aux | 100000 | 100000 | 15 | 900 | 1|
+| control | 1000 | 1000 | 30 | 30 | 8|
+| imu | 2000 | 2000 | 100 | 130 | 7|
+| telemetry | 38462 | 38462 | 250 | 380 | 6|
+| shell | 50000 | 50000 | 150 | 530 | 5|
+| idle_aux | 100000 | 100000 | 15 | 900 | 3|
 
 Các R trong bảng mới tính interference giữa các task, chưa gồm chờ I2C, ISR, blocking và recovery; chưa dùng để kết luận schedulable.
 

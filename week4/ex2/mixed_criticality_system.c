@@ -30,6 +30,12 @@ typedef struct
     bool full;
 } text_t;
 
+typedef struct
+{
+    uint32_t time;
+    uint32_t skipped;
+} control_stamp_t;
+
 static StaticTask_t task_tcb[W4E2_NUM_TASKS];
 static StaticTask_t idle_tcb;
 static StackType_t control_stack[256];
@@ -62,11 +68,42 @@ static volatile uint32_t telemetry_us = 38462U;
 static volatile uint32_t telemetry_due;
 static volatile uint32_t control_due;
 static volatile uint32_t next_control_due;
+static control_stamp_t control_stamps[16];
+static volatile uint32_t control_written;
+static uint32_t control_read;
 static volatile uint32_t missed_ticks;
 static volatile uint32_t jitter_max_us;
 static volatile uint32_t i2c_errors;
 static volatile uint32_t recovery_count;
+static volatile uint32_t control_jobs;
+static volatile uint32_t imu_jobs;
 static uint32_t reply_dropped;
+
+volatile uint32_t wcrt_max[W4E2_NUM_TASKS] W4_MEASURE_STORAGE;
+volatile uint32_t stack_min[W4E2_NUM_TASKS];
+volatile uint32_t job_count[W4E2_NUM_TASKS] W4_MEASURE_STORAGE;
+volatile uint32_t invalid_jobs[W4E2_NUM_TASKS] W4_MEASURE_STORAGE;
+volatile uint32_t deadline_misses[W4E2_NUM_TASKS] W4_MEASURE_STORAGE;
+volatile uint32_t measured_cpu_x100;
+volatile bool measuring;
+volatile bool fault_measuring;
+volatile bool hang_aux;
+static volatile uint32_t release_stamp[W4E2_NUM_TASKS];
+static volatile bool release_valid[W4E2_NUM_TASKS];
+static volatile uint32_t telemetry_release;
+static volatile bool telemetry_pending;
+static volatile uint32_t aux_release;
+static volatile bool aux_pending;
+static uint32_t measure_start_us;
+static TickType_t measure_start_tick;
+static TickType_t measure_end_tick;
+static uint32_t log_dropped;
+static uint32_t min_stack_all = UINT32_MAX;
+static bool cpu_valid;
+static bool cpu_primed;
+static volatile bool sampling;
+static configRUN_TIME_COUNTER_TYPE previous_total;
+static configRUN_TIME_COUNTER_TYPE previous_idle;
 
 void vApplicationGetIdleTaskMemory(StaticTask_t **tcb,
     StackType_t **stack,
@@ -111,6 +148,79 @@ uint32_t runtime_count(void)
     return high + count;
 }
 
+/* The caller holds a critical section while mapping ticks to the 1 MHz clock. */
+static uint32_t tick_stamp(uint32_t expected, uint32_t current)
+{
+    uint32_t first;
+    uint32_t second;
+    uint32_t pending;
+    uint32_t after;
+    uint32_t now;
+
+    do
+    {
+        pending = SCB->ICSR & SCB_ICSR_PENDSTSET_Msk;
+        first = SysTick->VAL;
+        now = runtime_count();
+        second = SysTick->VAL;
+        after = SCB->ICSR & SCB_ICSR_PENDSTSET_Msk;
+    } while (second > first || pending != after);
+
+    if (pending != 0U)
+    {
+        ++current;
+    }
+    uint32_t phase = (SysTick->LOAD + 1U - first) /
+        (configCPU_CLOCK_HZ / 1000000UL);
+    return now - phase - (current - expected) * (1000000UL / configTICK_RATE_HZ);
+}
+
+void measure_wait(void *task, uint32_t wake, uint32_t current, uint32_t periodic)
+{
+    if (!measuring && !fault_measuring)
+    {
+        return;
+    }
+    uint32_t role;
+    if (periodic != 0U && task == handles[IMU])
+    {
+        role = IMU;
+    }
+    else if (periodic == 0U && task == handles[AUX])
+    {
+        role = AUX;
+    }
+    else
+    {
+        return;
+    }
+    release_stamp[role] = tick_stamp(wake, current);
+    release_valid[role] = true;
+}
+
+static bool record_job(uint32_t role, uint32_t released, uint32_t finished)
+{
+    if ((!measuring && !fault_measuring) ||
+        (int32_t)(released - measure_start_us) < 0)
+    {
+        return false;
+    }
+    static const uint32_t deadlines[5] = {100000U, 50000U, 38462U, 2000U, 1000U};
+    uint32_t response = finished - released;
+    taskENTER_CRITICAL();
+    if (response > wcrt_max[role])
+    {
+        wcrt_max[role] = response;
+    }
+    ++job_count[role];
+    if (response >= deadlines[role])
+    {
+        ++deadline_misses[role];
+    }
+    taskEXIT_CRITICAL();
+    return true;
+}
+
 void i2c_timer_start(uint32_t timeout_us)
 {
     TIM4->DIER &= ~TIM_DIER_CC1IE;
@@ -128,6 +238,7 @@ void i2c_timer_stop(void)
 static void telemetry_timer(void)
 {
     TIM4->DIER &= ~TIM_DIER_CC2IE;
+    telemetry_pending = false;
     if (!paused && telemetry_us != 0U)
     {
         telemetry_due = runtime_count() + telemetry_us;
@@ -160,7 +271,21 @@ void TIM4_IRQHandler(void)
         if ((int32_t)(now - telemetry_due) >= 0)
         {
             uint32_t period = telemetry_us;
-            telemetry_due += ((now - telemetry_due) / period + 1U) * period;
+            uint32_t skipped = (now - telemetry_due) / period;
+            if (!telemetry_pending)
+            {
+                telemetry_release = telemetry_due;
+                telemetry_pending = true;
+            }
+            else if (measuring || fault_measuring)
+            {
+                ++invalid_jobs[TELEMETRY];
+            }
+            if (measuring || fault_measuring)
+            {
+                invalid_jobs[TELEMETRY] += skipped;
+            }
+            telemetry_due += (skipped + 1U) * period;
             TIM4->CCR2 = (uint16_t)telemetry_due;
             BaseType_t woken = pdFALSE;
             (void)xTaskNotifyIndexedFromISR(handles[TELEMETRY],
@@ -206,6 +331,8 @@ static void set_paused(bool value)
     }
     paused = value;
     TIM3->CR1 = 0U;
+    control_written = 0U;
+    control_read = 0U;
     TIM3->CNT = 0U;
     TIM3->SR = 0U;
     NVIC_ClearPendingIRQ(TIM3_IRQn);
@@ -232,6 +359,10 @@ void TIM3_IRQHandler(void)
         {
             skipped = 0U;
         }
+        control_stamps[control_written % 16U].time = next_control_due;
+        control_stamps[control_written % 16U].skipped = skipped;
+        __DMB();
+        ++control_written;
         missed_ticks += skipped;
         control_due = next_control_due + skipped * 1000U;
         next_control_due = control_due + 1000U;
@@ -277,9 +408,25 @@ static void control_task(void *parameter)
         {
             continue;
         }
+        taskENTER_CRITICAL();
+        uint32_t available = control_written - control_read;
+        bool timed = pending != 0U && pending <= available && available <= 16U;
+        uint32_t released =
+            timed ? control_stamps[control_read % 16U].time : control_due;
+        uint32_t due = pending;
+        if (timed)
+        {
+            for (uint32_t index = 0U; index < pending; ++index)
+            {
+                due += control_stamps[(control_read + index) % 16U].skipped;
+            }
+        }
+        control_read = pending <= available ? control_read + pending : control_written;
+        taskEXIT_CRITICAL();
+
         GPIOA->BSRR = GPIO_BSRR_BS2;
         uint32_t start = runtime_count();
-        uint32_t late = start - control_due;
+        uint32_t late = start - released;
         if (late > jitter_max_us)
         {
             jitter_max_us = late;
@@ -290,6 +437,7 @@ static void control_task(void *parameter)
         }
         taskENTER_CRITICAL();
 
+        uint32_t skipped = missed_ticks;
         system_status.control_overrun_count += missed_ticks;
         missed_ticks = 0U;
 
@@ -320,6 +468,31 @@ static void control_task(void *parameter)
             ++system_status.control_overrun_count;
         }
         GPIOA->BSRR = GPIO_BSRR_BR2;
+
+        uint32_t response = runtime_count() - released;
+
+        if (timed && record_job(CONTROL, released, released + response))
+        {
+            uint32_t missed = response / 1000U;
+            if (missed > due)
+            {
+                missed = due;
+            }
+            /* record_job already counted the oldest late job once. */
+            if (missed > 1U)
+            {
+                deadline_misses[CONTROL] += missed - 1U;
+            }
+            invalid_jobs[CONTROL] += due - 1U;
+        }
+        else if ((measuring || fault_measuring) && !timed)
+        {
+            ++invalid_jobs[CONTROL];
+            deadline_misses[CONTROL] += pending > 0U ? pending - 1U : 0U;
+        }
+
+        ++control_jobs;
+        fault_control_done(response, pending > 1U || skipped != 0U || !timed);
     }
 }
 
@@ -364,6 +537,7 @@ static void imu_task(void *parameter)
     {
         if (paused)
         {
+            release_valid[IMU] = false;
             vTaskDelay(pdMS_TO_TICKS(100U));
             release = xTaskGetTickCount();
             continue;
@@ -372,9 +546,13 @@ static void imu_task(void *parameter)
         if (!ready && !i2c_fault_pending() && now - last_setup >= pdMS_TO_TICKS(100U))
         {
             last_setup = now;
+            release_valid[IMU] = false;
             ready = imu_setup();
             release = xTaskGetTickCount();
         }
+        uint32_t released = release_stamp[IMU];
+        bool timed = release_valid[IMU];
+        release_valid[IMU] = false;
         if (ready && i2c_job_start())
         {
             uint8_t reg = 0x3BU;
@@ -418,6 +596,13 @@ static void imu_task(void *parameter)
             imu_valid = false;
             if (!recovery_sent)
             {
+                taskENTER_CRITICAL();
+                if (!aux_pending)
+                {
+                    aux_release = runtime_count();
+                    aux_pending = true;
+                }
+                taskEXIT_CRITICAL();
                 (void)xTaskNotifyGive(handles[AUX]);
             }
             recovery_sent = true;
@@ -426,6 +611,12 @@ static void imu_task(void *parameter)
         {
             recovery_sent = false;
         }
+        if (timed)
+        {
+            record_job(IMU, released, runtime_count());
+        }
+        ++imu_jobs;
+
         if (xTaskDelayUntil(&release, pdMS_TO_TICKS(2U)) == pdFALSE)
         {
             release = xTaskGetTickCount();
@@ -479,6 +670,215 @@ static void field(text_t *out, const char *name, uint32_t value)
     append_number(out, value);
 }
 
+bool system_log(const char *text)
+{
+    reply_t reply;
+    uint32_t length = (uint32_t)strlen(text);
+    if (length >= sizeof(reply.text))
+    {
+        ++log_dropped;
+        return false;
+    }
+    memcpy(reply.text, text, length + 1U);
+    reply.length = (uint16_t)length;
+    if (xQueueSend(reply_queue, &reply, pdMS_TO_TICKS(20U)) != pdPASS)
+    {
+        ++log_dropped;
+        return false;
+    }
+    (void)xTaskNotifyIndexed(handles[TELEMETRY], 1U, SHELL_REPLY_READY, eSetBits);
+    return true;
+}
+
+static bool sample_cpu(void)
+{
+    taskENTER_CRITICAL();
+    configRUN_TIME_COUNTER_TYPE idle = ulTaskGetIdleRunTimeCounter();
+    configRUN_TIME_COUNTER_TYPE total = runtime_count();
+    taskEXIT_CRITICAL();
+
+    configRUN_TIME_COUNTER_TYPE elapsed = total - previous_total;
+    configRUN_TIME_COUNTER_TYPE idle_elapsed = idle - previous_idle;
+    cpu_valid = cpu_primed && elapsed != 0U && idle_elapsed <= elapsed;
+    if (cpu_valid)
+    {
+        measured_cpu_x100 =
+            (uint32_t)((uint64_t)(elapsed - idle_elapsed) * 10000U / elapsed);
+    }
+    previous_total = total;
+    previous_idle = idle;
+    cpu_primed = true;
+    return cpu_valid;
+}
+
+static bool start_measurement(bool fault)
+{
+    if (measuring || fault_measuring || sampling || paused ||
+        (!fault && telemetry_us == 0U))
+    {
+        return false;
+    }
+    cpu_primed = false;
+    (void)sample_cpu();
+    uart_measure_reset();
+    taskENTER_CRITICAL();
+    for (uint32_t role = 0U; role < W4E2_NUM_TASKS; ++role)
+    {
+        wcrt_max[role] = 0U;
+        stack_min[role] = 0U;
+        job_count[role] = 0U;
+        invalid_jobs[role] = 0U;
+        deadline_misses[role] = 0U;
+    }
+    measure_start_tick = xTaskGetTickCount();
+    measure_start_us = runtime_count();
+    log_dropped = 0U;
+    measuring = !fault;
+    fault_measuring = fault;
+    taskEXIT_CRITICAL();
+    return true;
+}
+
+bool system_measure_begin(void)
+{
+    return start_measurement(false);
+}
+
+void system_measure_end(void)
+{
+    taskENTER_CRITICAL();
+    if (measuring)
+    {
+        measure_end_tick = xTaskGetTickCount();
+        measuring = false;
+    }
+    taskEXIT_CRITICAL();
+}
+
+void system_measure_sample(uint32_t elapsed_ms, uint32_t extra_stack_min)
+{
+    sampling = true;
+    bool cpu_ok = sample_cpu();
+    min_stack_all = (uint32_t)uxTaskGetStackHighWaterMark(xTaskGetIdleTaskHandle());
+    if (extra_stack_min < min_stack_all)
+    {
+        min_stack_all = extra_stack_min;
+    }
+    for (uint32_t role = 0U; role < W4E2_NUM_TASKS; ++role)
+    {
+        stack_min[role] = (uint32_t)uxTaskGetStackHighWaterMark(handles[role]);
+        if (stack_min[role] < min_stack_all)
+        {
+            min_stack_all = stack_min[role];
+        }
+    }
+    for (uint32_t role = 0U; role < W4E2_NUM_TASKS; ++role)
+    {
+        char line[160];
+        text_t out = {line, sizeof(line), 0U, false};
+        taskENTER_CRITICAL();
+        uint32_t count = job_count[role];
+        uint32_t response = wcrt_max[role];
+        uint32_t misses = deadline_misses[role];
+        uint32_t invalid = invalid_jobs[role];
+        taskEXIT_CRITICAL();
+        append_text(&out, "M,");
+        append_number(&out, elapsed_ms);
+        append_text(&out, ",");
+        append_text(&out, task_names[role]);
+        field(&out, ",", count);
+        append_text(&out, ",");
+        if (count != 0U)
+        {
+            append_number(&out, response);
+        }
+        field(&out, ",", stack_min[role]);
+        append_text(&out, ",");
+        if (cpu_ok)
+        {
+            append_number(&out, measured_cpu_x100);
+        }
+        field(&out, ",", misses);
+        field(&out, ",", invalid);
+        field(&out, ",", log_dropped);
+        append_text(&out, "\r\n");
+        (void)system_log(line);
+    }
+    sampling = false;
+}
+
+bool system_fault_begin(void)
+{
+    return start_measurement(true);
+}
+
+void system_fault_end(void)
+{
+    taskENTER_CRITICAL();
+    fault_measuring = false;
+    taskEXIT_CRITICAL();
+}
+
+bool system_fault_stat(uint32_t role, char *reply, uint32_t size)
+{
+    configASSERT(role < W4E2_NUM_TASKS);
+    text_t out = {reply, size, 0U, false};
+    taskENTER_CRITICAL();
+    uint32_t count = job_count[role];
+    uint32_t response = wcrt_max[role];
+    uint32_t misses = deadline_misses[role];
+    uint32_t invalid = invalid_jobs[role];
+    taskEXIT_CRITICAL();
+    append_text(&out, "F,");
+    append_text(&out, task_names[role]);
+    field(&out, ",", count);
+    append_text(&out, ",");
+    if (count != 0U)
+    {
+        append_number(&out, response);
+    }
+    else
+    {
+        append_text(&out, "NA");
+    }
+    field(&out, ",", misses);
+    field(&out, ",", invalid);
+    append_text(&out, "\r\n");
+    return !out.full;
+}
+
+bool system_measure_status(char *reply, uint32_t size)
+{
+    text_t out = {reply, size, 0U, false};
+    reply[0] = '\0';
+    TickType_t end = measuring ? xTaskGetTickCount() : measure_end_tick;
+    field(&out, "measuring=", measuring ? 1U : 0U);
+    field(&out, " elapsed_ms=", (end - measure_start_tick) * portTICK_PERIOD_MS);
+    append_text(&out, " cpu_x100=");
+    if (cpu_valid)
+    {
+        append_number(&out, measured_cpu_x100);
+    }
+    else
+    {
+        append_text(&out, "NA");
+    }
+    append_text(&out, " min_stack_all=");
+    if (min_stack_all != UINT32_MAX)
+    {
+        append_number(&out, min_stack_all);
+    }
+    else
+    {
+        append_text(&out, "NA");
+    }
+    field(&out, " log_dropped=", log_dropped);
+    field(&out, " rx_stamp_lost=", uart_stamp_lost());
+    field(&out, " shell_jobs=", job_count[SHELL]);
+    append_text(&out, "\r\n");
+    return !out.full;
+}
+
 void mixed_criticality_system_get_status(w4e2_system_status_t *out)
 {
     configASSERT(out != NULL);
@@ -530,6 +930,10 @@ bool mixed_criticality_system_shell_exec(const char *cmd, char *reply, uint32_t 
     {
         append_text(&out, "error: line too long\r\n");
         return false;
+    }
+    if (fault_shell_exec(cmd, reply, size))
+    {
+        return true;
     }
     bool recognized = true;
 
@@ -616,8 +1020,8 @@ static void shell_task(void *parameter)
 
     for (;;)
     {
-        int byte = uart_read_byte(
-            length != 0U || discard ? pdMS_TO_TICKS(10U) : portMAX_DELAY);
+        int byte = uart_read_byte(length != 0U || discard ? pdMS_TO_TICKS(10U)
+                                                          : portMAX_DELAY);
         if ((length != 0U || discard) &&
             xTaskGetTickCount() - started >= pdMS_TO_TICKS(W4E2_SHELL_CMD_TIMEOUT_MS))
         {
@@ -632,20 +1036,28 @@ static void shell_task(void *parameter)
         {
             if (length != 0U && !discard)
             {
+                bool measure_this = measuring || fault_measuring;
+                uint32_t released;
+                bool timed = uart_line_release(&released);
                 line[length] = '\0';
                 reply_t reply;
-                (void)mixed_criticality_system_shell_exec(line,
-                    reply.text,
-                    sizeof(reply.text));
+                (void)mixed_criticality_system_shell_exec(
+                    line, reply.text, sizeof(reply.text));
                 reply.length = (uint16_t)strlen(reply.text);
                 if (xQueueSend(reply_queue, &reply, 0U) != pdPASS)
                 {
                     ++reply_dropped;
                 }
-                (void)xTaskNotifyIndexed(handles[TELEMETRY],
-                    1U,
-                    SHELL_REPLY_READY,
-                    eSetBits);
+                (void)xTaskNotifyIndexed(
+                    handles[TELEMETRY], 1U, SHELL_REPLY_READY, eSetBits);
+                if (measure_this && timed)
+                {
+                    record_job(SHELL, released, runtime_count());
+                }
+                else if (measure_this && (measuring || fault_measuring))
+                {
+                    ++invalid_jobs[SHELL];
+                }
                 vTaskDelay(pdMS_TO_TICKS(50U));
             }
             length = 0U;
@@ -686,6 +1098,16 @@ static void telemetry_task(void *parameter)
     {
         uint32_t events = 0U;
         (void)xTaskNotifyWaitIndexed(1U, 0U, UINT32_MAX, &events, portMAX_DELAY);
+        uint32_t released = 0U;
+        bool timed = false;
+        if ((events & TELEMETRY_DUE) != 0U)
+        {
+            taskENTER_CRITICAL();
+            released = telemetry_release;
+            timed = telemetry_pending;
+            telemetry_pending = false;
+            taskEXIT_CRITICAL();
+        }
         reply_t reply;
         if (xQueueReceive(reply_queue, &reply, 0U) == pdPASS)
         {
@@ -722,19 +1144,89 @@ static void telemetry_task(void *parameter)
             memcpy(payload + 16U, &words[1], 24U);
             payload[40] = imu_valid ? 1U : 0U;
             uart_pack_frame(frame, payload, sequence++);
-            (void)uart_dma_send(frame, sizeof(frame));
+            bool sent = uart_dma_send(frame, sizeof(frame));
+            if (timed)
+            {
+                record_job(TELEMETRY, released, runtime_count());
+            }
+            if ((measuring || fault_measuring) && (!sent || !timed))
+            {
+                ++invalid_jobs[TELEMETRY];
+            }
         }
     }
+}
+
+bool fault_system_ready(uint32_t *errors)
+{
+    taskENTER_CRITICAL();
+    *errors = i2c_errors;
+    bool ready = !paused && imu_valid;
+    taskEXIT_CRITICAL();
+    return ready;
+}
+
+__attribute__((weak))
+uint32_t fault_poll(uint32_t control_count, uint32_t imu_count, bool paused,
+    bool valid, int32_t output, uint32_t i2c_count, uint32_t overruns)
+{
+    (void)control_count;
+    (void)imu_count;
+    (void)paused;
+    (void)valid;
+    (void)output;
+    (void)i2c_count;
+    (void)overruns;
+    return 100U;
+}
+
+__attribute__((weak))
+void fault_control_done(uint32_t response_us, bool lost)
+{
+    (void)response_us;
+    (void)lost;
+}
+
+__attribute__((weak))
+bool fault_shell_exec(const char *cmd, char *reply, uint32_t size)
+{
+    (void)cmd;
+    (void)reply;
+    (void)size;
+    return false;
 }
 
 static void aux_task(void *parameter)
 {
     (void)parameter;
     TickType_t last_recovery = xTaskGetTickCount() - pdMS_TO_TICKS(100U);
+    uint32_t released = 0U;
+    bool timed = false;
 
     for (;;)
     {
-        (void)ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(100U));
+        uint32_t wait_ms = fault_poll(control_jobs, imu_jobs, paused,
+            imu_valid, control_value, i2c_errors, system_status.control_overrun_count);
+        if (timed)
+        {
+            record_job(AUX, released, runtime_count());
+        }
+        uint32_t notified = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(wait_ms));
+        taskENTER_CRITICAL();
+        released = notified != 0U ? aux_release : release_stamp[AUX];
+        timed = notified != 0U ? aux_pending : release_valid[AUX];
+        aux_pending = false;
+        release_valid[AUX] = false;
+        taskEXIT_CRITICAL();
+
+        if (hang_aux)
+        {
+            for (;;)
+            {
+                __NOP();
+            }
+        }
+
         if (resume_pending)
         {
             resume_pending = false;
@@ -802,6 +1294,11 @@ void sleep_idle(uint32_t expected_ticks)
     }
 }
 
+__attribute__((weak)) void system_rtc_init(void)
+{
+    tickless_rtc_init();
+}
+
 void mixed_criticality_system_init(void)
 {
     _Static_assert(W4E2_NUM_TASKS == 5, "Expected five application tasks");
@@ -821,7 +1318,7 @@ void mixed_criticality_system_init(void)
     NVIC_EnableIRQ(EXTI0_IRQn);
     i2c1_driver_init();
     uart_dma_init();
-    tickless_rtc_init();
+    system_rtc_init();
     control_timer_init();
     imu_queue =
         xQueueCreateStatic(1U, sizeof(w4e2_imu_sample_t), imu_storage, &imu_queue_ctrl);

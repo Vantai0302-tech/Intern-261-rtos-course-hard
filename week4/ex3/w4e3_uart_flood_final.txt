@@ -1,0 +1,97 @@
+# Physical board; COM4 921600 8N1; binary telemetry CRC checked and filtered from text.
+# Final firmware; telemetry remains enabled; flood=31 x characters plus LF repeatedly for 3 s; capture ends after backlog drains.
+TX +0.202060s status
+RX +0.205075s active telemetry_ms=39 overruns=0 stale=1406 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=0 reply_dropped=0 jitter_max_us=74 cpu_x100=1232
+TX +0.412658s fault uart
+RX +0.414897s armed UART_FLOOD; send UART data continuously
+RX +0.629917s commands: status, stack, telemetry N, pause, resume
+RX +0.681000s commands: status, stack, telemetry N, pause, resume
+RX +0.731087s commands: status, stack, telemetry N, pause, resume
+RX +0.782037s commands: status, stack, telemetry N, pause, resume
+RX +0.831893s commands: status, stack, telemetry N, pause, resume
+RX +0.882088s commands: status, stack, telemetry N, pause, resume
+RX +0.931231s commands: status, stack, telemetry N, pause, resume
+RX +0.981993s commands: status, stack, telemetry N, pause, resume
+RX +1.031950s commands: status, stack, telemetry N, pause, resume
+RX +1.081274s commands: status, stack, telemetry N, pause, resume
+RX +1.130941s commands: status, stack, telemetry N, pause, resume
+RX +1.180910s commands: status, stack, telemetry N, pause, resume
+RX +1.230938s commands: status, stack, telemetry N, pause, resume
+RX +1.280998s commands: status, stack, telemetry N, pause, resume
+RX +1.331034s commands: status, stack, telemetry N, pause, resume
+RX +1.382147s commands: status, stack, telemetry N, pause, resume
+RX +1.431277s commands: status, stack, telemetry N, pause, resume
+RX +1.480981s commands: status, stack, telemetry N, pause, resume
+RX +1.530959s commands: status, stack, telemetry N, pause, resume
+RX +1.581105s commands: status, stack, telemetry N, pause, resume
+RX +1.633139s commands: status, stack, telemetry N, pause, resume
+RX +1.683021s commands: status, stack, telemetry N, pause, resume
+RX +1.733304s commands: status, stack, telemetry N, pause, resume
+RX +1.783161s commands: status, stack, telemetry N, pause, resume
+RX +1.834045s commands: status, stack, telemetry N, pause, resume
+RX +1.884067s commands: status, stack, telemetry N, pause, resume
+RX +1.933155s commands: status, stack, telemetry N, pause, resume
+RX +1.982942s commands: status, stack, telemetry N, pause, resume
+RX +2.035292s commands: status, stack, telemetry N, pause, resume
+RX +2.086052s commands: status, stack, telemetry N, pause, resume
+RX +2.137332s commands: status, stack, telemetry N, pause, resume
+RX +2.189111s commands: status, stack, telemetry N, pause, resume
+RX +2.239104s commands: status, stack, telemetry N, pause, resume
+RX +2.289113s commands: status, stack, telemetry N, pause, resume
+RX +2.339424s commands: status, stack, telemetry N, pause, resume
+RX +2.389238s commands: status, stack, telemetry N, pause, resume
+RX +2.442258s commands: status, stack, telemetry N, pause, resume
+RX +2.493021s commands: status, stack, telemetry N, pause, resume
+RX +2.542932s commands: status, stack, telemetry N, pause, resume
+RX +2.594220s commands: status, stack, telemetry N, pause, resume
+RX +2.645225s commands: status, stack, telemetry N, pause, resume
+RX +2.694059s commands: status, stack, telemetry N, pause, resume
+RX +2.744971s commands: status, stack, telemetry N, pause, resume
+RX +2.795127s commands: status, stack, telemetry N, pause, resume
+RX +2.846370s commands: status, stack, telemetry N, pause, resume
+RX +2.896948s commands: status, stack, telemetry N, pause, resume
+RX +2.947042s commands: status, stack, telemetry N, pause, resume
+RX +2.996970s commands: status, stack, telemetry N, pause, resume
+RX +3.049284s commands: status, stack, telemetry N, pause, resume
+RX +3.099162s commands: status, stack, telemetry N, pause, resume
+RX +3.149181s commands: status, stack, telemetry N, pause, resume
+RX +3.200362s commands: status, stack, telemetry N, pause, resume
+RX +3.251165s commands: status, stack, telemetry N, pause, resume
+RX +3.300898s commands: status, stack, telemetry N, pause, resume
+RX +3.352884s commands: status, stack, telemetry N, pause, resume
+RX +3.403025s commands: status, stack, telemetry N, pause, resume
+RX +3.457817s commands: status, stack, telemetry N, pause, resume
+RX +3.509022s commands: status, stack, telemetry N, pause, resume
+RX +3.559057s commands: status, stack, telemetry N, pause, resume
+RX +3.609966s commands: status, stack, telemetry N, pause, resume
+RX +3.661138s commands: status, stack, telemetry N, pause, resume
+# host_bytes=276480 write_flush_seconds=3.052072
+RX +3.710950s commands: status, stack, telemetry N, pause, resume
+RX +3.761996s commands: status, stack, telemetry N, pause, resume
+RX +3.813117s commands: status, stack, telemetry N, pause, resume
+RX +3.862858s commands: status, stack, telemetry N, pause, resume
+RX +3.915043s commands: status, stack, telemetry N, pause, resume
+TX +5.712428s fault result
+RX +5.714766s fault=UART_FLOOD finished reset=none missed=not_observed declared=yes capture=on
+TX +6.025663s fault stop
+RX +6.028102s fault capture stopped
+TX +6.337547s fault result
+RX +6.340302s fault=UART_FLOOD finished reset=none missed=not_observed declared=yes capture=off
+TX +6.546171s fault timing
+RX +6.549166s boot_us=NA ready_us=NA starved_us=0 late_us=0
+# F,task,completed_jobs,max_completed_response_us,deadline_misses,invalid_measurements
+TX +6.758723s fault stat 0
+RX +6.761176s F,idle_aux,280,3649,0,0
+TX +6.968312s fault stat 1
+RX +6.969990s F,shell,67,800931,65,0
+TX +7.169584s fault stat 2
+RX +7.172110s F,telemetry,146,1457,0,0
+TX +7.379249s fault stat 3
+RX +7.382168s F,imu,2805,1272,0,0
+TX +7.582359s fault stat 4
+RX +7.584948s F,control,5613,224,0,0
+TX +7.791132s status
+RX +7.794920s active telemetry_ms=39 overruns=0 stale=5200 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1521
+# rx_dropped_delta=272405 control_overruns_delta=0
+# Shell deadline misses under flood are reported in F rows. Firmware control result: fault=UART_FLOOD finished reset=none missed=not_observed declared=yes capture=off
+# host valid_frames=207 crc_errors=0

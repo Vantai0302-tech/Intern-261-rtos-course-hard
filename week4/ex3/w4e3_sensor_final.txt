@@ -1,0 +1,232 @@
+# Physical board; COM4 921600 8N1; binary telemetry CRC checked and filtered from text.
+# Final firmware. Capture covers arming, physical SDA unplug, degraded operation and reconnection. Telemetry stays enabled.
+TX +0.417558s status
+RX +0.421386s active telemetry_ms=39 overruns=0 stale=48236 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1238
+TX +0.628616s fault sensor
+RX +0.631486s armed SENSOR_UNPLUG; disconnect sensor SDA
+READY_TO_UNPLUG: disconnect MPU6050 SDA only; VCC, GND and SCL stay connected.
+TX +0.837841s fault result
+RX +0.840373s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +1.049116s status
+RX +1.052348s active telemetry_ms=39 overruns=0 stale=48552 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1326
+TX +1.859032s fault result
+RX +1.861539s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +2.071046s status
+RX +2.074943s active telemetry_ms=39 overruns=0 stale=49063 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +2.881718s fault result
+RX +2.884427s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +3.084026s status
+RX +3.087817s active telemetry_ms=39 overruns=0 stale=49569 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +3.895243s fault result
+RX +3.898513s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +4.104156s status
+RX +4.107805s active telemetry_ms=39 overruns=0 stale=50079 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +4.926736s fault result
+RX +4.930551s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +5.128352s status
+RX +5.132468s active telemetry_ms=39 overruns=0 stale=50591 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +5.935825s fault result
+RX +5.938439s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +6.149065s status
+RX +6.152568s active telemetry_ms=39 overruns=0 stale=51102 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1317
+TX +6.960146s fault result
+RX +6.963523s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +7.166702s status
+RX +7.170792s active telemetry_ms=39 overruns=0 stale=51611 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1319
+TX +7.972452s fault result
+RX +7.976654s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +8.181751s status
+RX +8.185751s active telemetry_ms=39 overruns=0 stale=52118 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +8.994386s fault result
+RX +8.997301s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +9.204202s status
+RX +9.207357s active telemetry_ms=39 overruns=0 stale=52629 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1317
+TX +10.005085s fault result
+RX +10.008667s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +10.205970s status
+RX +10.209666s active telemetry_ms=39 overruns=0 stale=53130 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +11.012936s fault result
+RX +11.016423s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +11.215929s status
+RX +11.219423s active telemetry_ms=39 overruns=0 stale=53635 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +12.026373s fault result
+RX +12.029485s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +12.239392s status
+RX +12.243663s active telemetry_ms=39 overruns=0 stale=54147 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +13.050418s fault result
+RX +13.053273s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +13.260581s status
+RX +13.264718s active telemetry_ms=39 overruns=0 stale=54658 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1318
+TX +14.071068s fault result
+RX +14.074417s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +14.281853s status
+RX +14.286430s active telemetry_ms=39 overruns=0 stale=55168 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1320
+TX +15.089378s fault result
+RX +15.092433s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +15.293551s status
+RX +15.297762s active telemetry_ms=39 overruns=0 stale=55674 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1314
+TX +16.104287s fault result
+RX +16.107410s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +16.308654s status
+RX +16.312266s active telemetry_ms=39 overruns=0 stale=56182 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +17.114862s fault result
+RX +17.117545s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +17.316443s status
+RX +17.320298s active telemetry_ms=39 overruns=0 stale=56686 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +18.126454s fault result
+RX +18.129370s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +18.332506s status
+RX +18.335628s active telemetry_ms=39 overruns=0 stale=57194 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1318
+TX +19.149005s fault result
+RX +19.152606s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +19.358371s status
+RX +19.362262s active telemetry_ms=39 overruns=0 stale=57707 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1318
+TX +20.160147s fault result
+RX +20.163328s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +20.370995s status
+RX +20.375518s active telemetry_ms=39 overruns=0 stale=58213 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +21.181656s fault result
+RX +21.184287s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +21.394422s status
+RX +21.398933s active telemetry_ms=39 overruns=0 stale=58725 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +22.204179s fault result
+RX +22.207524s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +22.416807s status
+RX +22.420697s active telemetry_ms=39 overruns=0 stale=59236 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1317
+TX +23.226696s fault result
+RX +23.229878s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +23.435455s status
+RX +23.439399s active telemetry_ms=39 overruns=0 stale=59745 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1317
+TX +24.238456s fault result
+RX +24.241639s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +24.448561s status
+RX +24.452643s active telemetry_ms=39 overruns=0 stale=60252 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +25.260183s fault result
+RX +25.263394s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +25.470855s status
+RX +25.474370s active telemetry_ms=39 overruns=0 stale=60763 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1315
+TX +26.281281s fault result
+RX +26.284507s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +26.493008s status
+RX +26.496425s active telemetry_ms=39 overruns=0 stale=61274 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1316
+TX +27.309200s fault result
+RX +27.312258s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +27.511944s status
+RX +27.515394s active telemetry_ms=39 overruns=0 stale=61784 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1318
+TX +28.314386s fault result
+RX +28.317299s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +28.525841s status
+RX +28.529208s active telemetry_ms=39 overruns=0 stale=62291 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1314
+TX +29.336581s fault result
+RX +29.339402s fault=SENSOR_UNPLUG pending reset=none missed=not_observed declared=yes capture=on
+TX +29.547922s status
+RX +29.551230s active telemetry_ms=39 overruns=0 stale=62802 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1312
+TX +30.348446s fault result
+RX +30.351410s fault=SENSOR_UNPLUG finished reset=none missed=not_observed declared=yes capture=on
+# measured degraded frame seq=3267 imu_valid=0 control_output=0 i2c_errors=1 payload_hex=edea01000000c6bd000008bb008c8c3f0000000000000000baf500000100000000000000ac000000000000
+READY_TO_RECONNECT: degradation recorded; reconnect SDA now.
+TX +30.553164s status
+RX +30.556498s active telemetry_ms=39 overruns=0 stale=63718 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=749
+TX +31.357783s status
+RX +31.361175s active telemetry_ms=39 overruns=0 stale=64523 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +32.159906s status
+RX +32.163537s active telemetry_ms=39 overruns=0 stale=65325 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=610
+TX +32.970259s status
+RX +32.973305s active telemetry_ms=39 overruns=0 stale=66135 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +33.774648s status
+RX +33.778475s active telemetry_ms=39 overruns=0 stale=66940 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=614
+TX +34.581676s status
+RX +34.585420s active telemetry_ms=39 overruns=0 stale=67747 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +35.392194s status
+RX +35.395235s active telemetry_ms=39 overruns=0 stale=68557 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=611
+TX +36.193889s status
+RX +36.197187s active telemetry_ms=39 overruns=0 stale=69359 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +37.003077s status
+RX +37.006253s active telemetry_ms=39 overruns=0 stale=70168 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=611
+TX +37.803751s status
+RX +37.810114s active telemetry_ms=39 overruns=0 stale=70972 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=614
+TX +38.614979s status
+RX +38.619326s active telemetry_ms=39 overruns=0 stale=71781 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +39.426090s status
+RX +39.429387s active telemetry_ms=39 overruns=0 stale=72592 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=614
+TX +40.229860s status
+RX +40.233269s active telemetry_ms=39 overruns=0 stale=73395 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +41.036645s status
+RX +41.040237s active telemetry_ms=39 overruns=0 stale=74202 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +41.847588s status
+RX +41.851348s active telemetry_ms=39 overruns=0 stale=75013 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +42.648843s status
+RX +42.653107s active telemetry_ms=39 overruns=0 stale=75815 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +43.459235s status
+RX +43.462219s active telemetry_ms=39 overruns=0 stale=76625 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +44.269861s status
+RX +44.273339s active telemetry_ms=39 overruns=0 stale=77435 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +45.071563s status
+RX +45.075496s active telemetry_ms=39 overruns=0 stale=78237 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +45.881040s status
+RX +45.884206s active telemetry_ms=39 overruns=0 stale=79047 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +46.692164s status
+RX +46.695152s active telemetry_ms=39 overruns=0 stale=79858 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +47.493778s status
+RX +47.497381s active telemetry_ms=39 overruns=0 stale=80660 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +48.309366s status
+RX +48.313210s active telemetry_ms=39 overruns=0 stale=81475 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=611
+TX +49.114710s status
+RX +49.118386s active telemetry_ms=39 overruns=0 stale=82281 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +49.926143s status
+RX +49.930739s active telemetry_ms=39 overruns=0 stale=83092 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=615
+TX +50.736705s status
+RX +50.740213s active telemetry_ms=39 overruns=0 stale=83903 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=609
+TX +51.549504s status
+RX +51.553079s active telemetry_ms=39 overruns=0 stale=84715 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +52.357118s status
+RX +52.360078s active telemetry_ms=39 overruns=0 stale=85523 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +53.161308s status
+RX +53.165187s active telemetry_ms=39 overruns=0 stale=86327 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=610
+TX +53.973614s status
+RX +53.977273s active telemetry_ms=39 overruns=0 stale=87140 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +54.780211s status
+RX +54.784175s active telemetry_ms=39 overruns=0 stale=87946 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +55.587681s status
+RX +55.591141s active telemetry_ms=39 overruns=0 stale=88754 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=611
+TX +56.392715s status
+RX +56.396306s active telemetry_ms=39 overruns=0 stale=89559 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=609
+TX +57.203362s status
+RX +57.207439s active telemetry_ms=39 overruns=0 stale=90370 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=613
+TX +58.010931s status
+RX +58.014323s active telemetry_ms=39 overruns=0 stale=91177 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=612
+TX +58.814187s status
+RX +58.818228s active telemetry_ms=39 overruns=0 stale=91981 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=611
+TX +59.625333s status
+RX +59.629039s active telemetry_ms=39 overruns=0 stale=92792 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=616
+TX +60.426471s status
+RX +60.430416s active telemetry_ms=39 overruns=0 stale=93593 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=602
+TX +61.236337s status
+RX +61.240200s active telemetry_ms=39 overruns=0 stale=94403 i2c_errors=1 recoveries=0 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=603
+TX +62.047954s status
+RX +62.052076s active telemetry_ms=39 overruns=0 stale=95215 i2c_errors=6 recoveries=5 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=616
+TX +62.856977s status
+RX +62.861476s active telemetry_ms=39 overruns=0 stale=96008 i2c_errors=6 recoveries=6 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=640
+# valid samples resumed first_tick=158809 last_tick=159577 valid_frames=21
+TX +65.664376s fault stop
+RX +65.666102s fault capture stopped
+TX +65.970165s fault result
+RX +65.973335s fault=SENSOR_UNPLUG finished reset=none missed=not_observed declared=yes capture=off
+TX +66.180959s fault timing
+RX +66.183085s boot_us=NA ready_us=NA starved_us=0 late_us=0
+# F,task,completed_jobs,max_completed_response_us,deadline_misses,invalid_measurements
+TX +66.387103s fault stat 0
+RX +66.389213s F,idle_aux,3252,687,0,0
+TX +66.588029s fault stat 1
+RX +66.590101s F,shell,100,903,0,0
+TX +66.791681s fault stat 2
+RX +66.794337s F,telemetry,1691,2433,0,0
+TX +67.003611s fault stat 3
+RX +67.006393s F,imu,32518,1590,0,0
+TX +67.214361s fault stat 4
+RX +67.216091s F,control,65038,146,0,0
+TX +67.425324s status
+RX +67.429081s active telemetry_ms=39 overruns=0 stale=98292 i2c_errors=6 recoveries=6 uart_errors=0 rx_dropped=272405 reply_dropped=0 jitter_max_us=172 cpu_x100=1294
+# i2c_errors_delta=6 recoveries_delta=6 control_overruns_delta=0
+# Sensor fault captured with all-role completed-job response times and direct invalid/zero-output telemetry evidence.
+# host valid_frames=1758 crc_errors=0

@@ -1,0 +1,49 @@
+# Physical board; COM4 921600 8N1; binary telemetry CRC checked and filtered from text.
+# Final firmware. RTC 32768 counts/s; boot_us ends at recovery init; ready_us ends at valid IMU and progressing control/IMU. Quantization allowance: 61.04 us.
+# F rows describe completed jobs only; NA marks no completed job, not a zero response time.
+TX +0.313202s status
+RX +0.316796s active telemetry_ms=39 overruns=0 stale=40734 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=0 reply_dropped=0 jitter_max_us=70 cpu_x100=1233
+# BEGIN HANG
+TX +0.524373s fault hang
+RX +0.526707s armed TASK_HANG
+TX +0.590739s status
+RX +0.594758s active telemetry_ms=39 overruns=0 stale=40873 i2c_errors=0 recoveries=0 uart_errors=0 rx_dropped=0 reply_dropped=0 jitter_max_us=70 cpu_x100=3304
+RX +0.615871s # W4E2 2413032; 921600 8N1; commands end with CR/LF
+TX +1.592177s fault result
+RX +1.595773s fault=TASK_HANG finished reset=IWDG missed=not_observed declared=no capture=off
+TX +1.802299s fault timing
+RX +1.804746s boot_us=87098 ready_us=206971 starved_us=0 late_us=0
+# F,task,completed_jobs,max_completed_response_us,deadline_misses,invalid_measurements
+TX +2.013111s fault stat 0
+RX +2.014644s F,idle_aux,0,NA,0,0
+TX +2.224056s fault stat 1
+RX +2.225756s F,shell,1,630,0,0
+TX +2.425074s fault stat 2
+RX +2.427900s F,telemetry,3,998,0,0
+TX +2.635579s fault stat 3
+RX +2.637805s F,imu,40,1087,0,0
+TX +2.846618s fault stat 4
+RX +2.849001s F,control,82,102,0,0
+# recovery bound observed: True
+# BEGIN CPU
+TX +3.069452s fault cpu
+RX +3.071899s armed CPU_OVERLOAD
+TX +3.135964s status
+RX +3.161931s # W4E2 2413032; 921600 8N1; commands end with CR/LF
+TX +4.137041s fault result
+RX +4.140907s fault=CPU_OVERLOAD finished reset=IWDG missed=yes declared=no capture=off
+TX +4.346067s fault timing
+RX +4.348831s boot_us=88105 ready_us=207978 starved_us=82927 late_us=0
+# F,task,completed_jobs,max_completed_response_us,deadline_misses,invalid_measurements
+TX +4.547390s fault stat 0
+RX +4.549831s F,idle_aux,0,NA,0,0
+TX +4.757977s fault stat 1
+RX +4.759804s F,shell,0,NA,0,0
+TX +4.968676s fault stat 2
+RX +4.971937s F,telemetry,0,NA,0,2
+TX +5.179400s fault stat 3
+RX +5.181669s F,imu,0,NA,0,0
+TX +5.391056s fault stat 4
+RX +5.393822s F,control,0,NA,0,0
+# recovery bound observed: True
+# host valid_frames=142 crc_errors=0
